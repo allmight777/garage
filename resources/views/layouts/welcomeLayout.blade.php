@@ -1722,7 +1722,7 @@
             <h3>Liens Utiles</h3>
             <ul class="footer-links">
                 <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#services">Services</a></li>
+                <li> <a href="{{ route('products.all') }}">Nos produits</a></li>
                 <li><a href="#model-3d">Produits 3D</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="#">Mentions Légales</a></li>

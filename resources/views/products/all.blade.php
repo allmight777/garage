@@ -1,3 +1,6 @@
+@extends('layouts.welcomeLayout')
+@section('content')
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -111,6 +114,7 @@
             gap: 1rem;
         }
 
+
         .stat-icon {
             width: 40px;
             height: 40px;
@@ -126,6 +130,8 @@
         .stat-content span {
             display: block;
         }
+
+
 
         .stat-label {
             font-size: 0.9rem;
@@ -775,6 +781,8 @@
     </style>
 </head>
 
+
+
 <body>
     <!-- Header -->
     <header class="page-header">
@@ -800,12 +808,7 @@
     </div>
 </a>
 
-<style>
-    .stat-item:hover {
-        background-color: #ff0000;
-        cursor: pointer;
-    }
-</style>
+
 
 
 
@@ -908,7 +911,7 @@
                             </div>
 
                             <div class="product-actions-full">
-                                <button class="btn-action btn-details-full" data-product-id="{{ $produit->id }}">
+                                <button class="btn-action btn-details-full" data-product-id="{{ $produit->id }}" style="background: linear-gradient(135deg, #120ef0 0%, #e60f0f 100%);">
                                     <i class="fas fa-info-circle"></i>
                                     <span>Détails</span>
                                 </button>
@@ -1268,3 +1271,5 @@
 </body>
 
 </html>
+
+@endsection
