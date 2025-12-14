@@ -7,8 +7,6 @@
 
         <!-- 1ERE SECTION -->
 
-
-
         <!-- Hero Section avec effet oblique -->
 
         <!-- Navigation -->
