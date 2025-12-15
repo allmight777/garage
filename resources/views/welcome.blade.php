@@ -19,7 +19,7 @@
 
                 <div class="nav-links">
                     <a href="#accueil">Accueil</a>
-                    <a href="#services">Services</a>
+                    <a href="#nos-services">Services</a>
 
                     <a href="{{ route('products.all') }}">Nos produits</a>
                     <a href="#contact">Contact</a>
@@ -36,8 +36,8 @@
             <!-- Mobile Menu -->
             <div class="mobile-menu">
                 <a href="#accueil">Accueil</a>
-                <a href="#services">Services</a>
-                 <a href="{{ route('products.all') }}">Nos produits</a>
+                <a href="#nos-services">Services</a>
+                <a href="{{ route('products.all') }}">Nos produits</a>
                 <a href="#contact">Contact</a>
                 <a href="tel:0123456789">01 23 45 67 89</a>
             </div>
@@ -46,6 +46,43 @@
         <!-- Hero Section -->
 
         <!-- HERO 3D -->
+
+        <style>
+            .hero-schedule {
+                width: 100%;
+                max-width: 400px;
+                margin: 1rem 0 2rem 0;
+                border-collapse: collapse;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                overflow: hidden;
+                font-size: 1rem;
+            }
+
+            .hero-schedule th,
+            .hero-schedule td {
+                padding: 0.5rem 0.75rem;
+                text-align: center;
+            }
+
+            .hero-schedule th {
+                background: #e50914;
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: 0.85rem;
+            }
+
+            .hero-schedule tbody tr:nth-child(even) {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            .hero-schedule td {
+                color: #fff;
+            }
+        </style>
+
+
         <section class="hero" id="accueil">
             <!-- Container 3D -->
             <div id="canvas3d-container"></div>
@@ -54,10 +91,55 @@
             <div id="hero-pc">
                 <div class="hero-text">
                     <h1 class="hero-title">GaragePro</h1>
-                    <h2 class="hero-subtitle">Excellence Automobile</h2>
-                    <p class="hero-description">
-                        Votre voiture mérite le meilleur. Service professionnel et expertise depuis 15 ans.
-                    </p>
+                    <h2 class="hero-subtitle">Horaires d'ouverture</h2>
+
+                    <table class="hero-schedule">
+                        <thead>
+                            <tr>
+                                <th>Jour</th>
+                                <th>Ouverture</th>
+                                <th>Fermeture</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lundi</td>
+                                <td>08:00</td>
+                                <td>18:00</td>
+                            </tr>
+                            <tr>
+                                <td>Mardi</td>
+                                <td>08:00</td>
+                                <td>18:00</td>
+                            </tr>
+                            <tr>
+                                <td>Mercredi</td>
+                                <td>08:00</td>
+                                <td>18:00</td>
+                            </tr>
+                            <tr>
+                                <td>Jeudi</td>
+                                <td>08:00</td>
+                                <td>18:00</td>
+                            </tr>
+                            <tr>
+                                <td>Vendredi</td>
+                                <td>08:00</td>
+                                <td>18:00</td>
+                            </tr>
+                            <tr>
+                                <td>Samedi</td>
+                                <td>09:00</td>
+                                <td>15:00</td>
+                            </tr>
+                            <tr>
+                                <td>Dimanche</td>
+                                <td>Fermé</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                     <a href="tel:0123456789" class="btn btn-primary">
                         <i class="fas fa-phone"></i> 01 23 45 67 89
                     </a>
@@ -69,10 +151,55 @@
         <section id="hero-mobile">
             <div class="hero-text-mobile">
                 <h1 class="hero-title">GaragePro</h1>
-                <h2 class="hero-subtitle">Excellence Automobile</h2>
-                <p class="hero-description">
-                    Votre voiture mérite le meilleur. Service professionnel et expertise depuis 15 ans.
-                </p>
+                <h2 class="hero-subtitle">Horaires d'ouverture</h2>
+
+                <table class="hero-schedule">
+                    <thead>
+                        <tr>
+                            <th>Jour</th>
+                            <th>Ouverture</th>
+                            <th>Fermeture</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lun</td>
+                            <td>08:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Mar</td>
+                            <td>08:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Mer</td>
+                            <td>08:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Jeu</td>
+                            <td>08:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Ven</td>
+                            <td>08:00</td>
+                            <td>18:00</td>
+                        </tr>
+                        <tr>
+                            <td>Sam</td>
+                            <td>09:00</td>
+                            <td>15:00</td>
+                        </tr>
+                        <tr>
+                            <td>Dim</td>
+                            <td>Fermé</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+
                 <a href="tel:0123456789" class="btn btn-primary">
                     <i class="fas fa-phone"></i> 01 23 45 67 89
                 </a>
@@ -1161,22 +1288,22 @@
 
 
 
-<!-- Products Section -->
-<section class="products" id="products-section">
-    <div class="section-title" id="products-title">
-        <h2 id="products-main-title">Nos Produits & Accessoires</h2>
-        <p id="products-subtitle">Découvrez notre gamme de produits de qualité pour votre véhicule</p>
-    </div>
+        <!-- Products Section -->
+        <section class="products" id="products-section">
+            <div class="section-title" id="products-title">
+                <h2 id="products-main-title">Nos Produits & Accessoires</h2>
+                <p id="products-subtitle">Découvrez notre gamme de produits de qualité pour votre véhicule</p>
+            </div>
 
-    <div class="products-grid" id="products-grid-container">
-        @foreach($produits as $index => $produit)
-        <div class="product-card {{ $index >= 6 ? 'extra-product' : '' }}" id="product-card-{{ $produit->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-            <div class="product-badge" id="badge-container-{{ $produit->id }}">
+            <div class="products-grid" id="products-grid-container">
+                @foreach ($produits as $index => $produit)
+                    <div class="product-card {{ $index >= 6 ? 'extra-product' : '' }}"
+                        id="product-card-{{ $produit->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                        <div class="product-badge" id="badge-container-{{ $produit->id }}">
 
-            @if($produit->typeProduit)
-    <span
-        id="type-badge-{{ $produit->id }}"
-        style="
+                            @if ($produit->typeProduit)
+                                <span id="type-badge-{{ $produit->id }}"
+                                    style="
             display:inline-flex;
             align-items:center;
             gap:6px;
@@ -1188,912 +1315,916 @@
             font-weight:600;
             box-shadow:0 4px 12px rgba(0,0,0,0.15);
             margin-bottom:8px;
-        "
-    >
-        <i class="fas fa-tag"></i> {{ $produit->typeProduit->nom }}
-    </span>
-@endif
+        ">
+                                    <i class="fas fa-tag"></i> {{ $produit->typeProduit->nom }}
+                                </span>
+                            @endif
 
+                        </div>
+
+                        <div class="product-image" id="image-container-{{ $produit->id }}">
+                            @if ($produit->image)
+                                <img src="{{ asset('storage/produits/' . $produit->image) }}" alt="{{ $produit->nom }}"
+                                    class="product-img" id="product-img-{{ $produit->id }}">
+                            @else
+                                <div class="product-image-placeholder" id="placeholder-{{ $produit->id }}">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                            @endif
+                            <div class="product-overlay" id="overlay-{{ $produit->id }}">
+                                <button class="zoom-btn" id="zoom-btn-{{ $produit->id }}"
+                                    data-image="{{ $produit->image ? asset('storage/produits/' . $produit->image) : asset('images/shopping-cart.png') }}">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="product-info" id="product-info-{{ $produit->id }}">
+                            <div class="product-header" id="product-header-{{ $produit->id }}">
+                                <h3 class="product-title" id="product-name-{{ $produit->id }}">{{ $produit->nom }}</h3>
+                                <div class="product-price" id="product-price-{{ $produit->id }}">
+                                    <span class="current-price"
+                                        id="price-{{ $produit->id }}">{{ number_format($produit->prix_vente, 2, ',', ' ') }}FCFA</span>
+                                    @if ($produit->taux_tva > 0)
+                                        <span class="price-ttc" id="ttc-{{ $produit->id }}">TTC</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <p class="product-description" id="product-desc-{{ $produit->id }}">
+                                {{ $produit->description ? Str::limit($produit->description, 80) : 'Description non disponible' }}
+                            </p>
+
+                            <div class="product-specs" id="product-specs-{{ $produit->id }}">
+                                <div class="spec-item" id="spec-marque-{{ $produit->id }}">
+                                    <span class="spec-icon">
+                                        <i class="fas fa-industry"></i>
+                                    </span>
+                                    <span class="spec-content">
+                                        <span class="spec-label">Marque</span>
+                                        <span class="spec-value">{{ $produit->marque ?? 'Non spécifiée' }}</span>
+                                    </span>
+                                </div>
+
+                                <div class="spec-item" id="spec-modele-{{ $produit->id }}">
+                                    <span class="spec-icon">
+                                        <i class="fas fa-cog"></i>
+                                    </span>
+                                    <span class="spec-content">
+                                        <span class="spec-label">Modèle</span>
+                                        <span class="spec-value">{{ $produit->modele ?? 'Standard' }}</span>
+                                    </span>
+                                </div>
+
+                                <div class="spec-item" id="spec-stock-{{ $produit->id }}">
+                                    <span class="spec-icon">
+                                        <i class="fas fa-layer-group"></i>
+                                    </span>
+                                    <span class="spec-content">
+                                        <span class="spec-label">Stock</span>
+                                        <span class="spec-value stock-{{ $produit->stock_status }}"
+                                            id="stock-value-{{ $produit->id }}">
+                                            {{ $produit->stock_actuel }} {{ $produit->unite_mesure }}
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="product-actions" id="actions-{{ $produit->id }}">
+                                <button class="btn btn-details" id="detail-btn-{{ $produit->id }}"
+                                    data-product-id="{{ $produit->id }}">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Voir détails</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
 
-            <div class="product-image" id="image-container-{{ $produit->id }}">
-                @if($produit->image)
-                    <img src="{{ asset('storage/produits/' . $produit->image) }}"
-                         alt="{{ $produit->nom }}"
-                         class="product-img"
-                         id="product-img-{{ $produit->id }}">
-                @else
-                    <div class="product-image-placeholder" id="placeholder-{{ $produit->id }}">
-                        <i class="fas fa-box-open"></i>
-                    </div>
-                @endif
-                <div class="product-overlay" id="overlay-{{ $produit->id }}">
-                    <button class="zoom-btn"
-                            id="zoom-btn-{{ $produit->id }}"
-                            data-image="{{ $produit->image ? asset('storage/produits/' . $produit->image) : asset('images/shopping-cart.png') }}">
-                        <i class="fas fa-expand"></i>
+            @if ($produits->count() > 6)
+                <div class="products-action" id="products-action-container" data-aos="fade-up">
+                    <button class="btn btn-more" id="show-more-products-btn">
+                        <i class="fas fa-chevron-down"></i>
+                        <span>Voir plus de produits</span>
                     </button>
                 </div>
-            </div>
+            @endif
+        </section>
 
-            <div class="product-info" id="product-info-{{ $produit->id }}">
-                <div class="product-header" id="product-header-{{ $produit->id }}">
-                    <h3 class="product-title" id="product-name-{{ $produit->id }}">{{ $produit->nom }}</h3>
-                    <div class="product-price" id="product-price-{{ $produit->id }}">
-                        <span class="current-price" id="price-{{ $produit->id }}">{{ number_format($produit->prix_vente, 2, ',', ' ') }}FCFA</span>
-                        @if($produit->taux_tva > 0)
-                        <span class="price-ttc" id="ttc-{{ $produit->id }}">TTC</span>
-                        @endif
-                    </div>
-                </div>
-
-                <p class="product-description" id="product-desc-{{ $produit->id }}">
-                    {{ $produit->description ? Str::limit($produit->description, 80) : 'Description non disponible' }}
-                </p>
-
-                <div class="product-specs" id="product-specs-{{ $produit->id }}">
-                    <div class="spec-item" id="spec-marque-{{ $produit->id }}">
-                        <span class="spec-icon">
-                            <i class="fas fa-industry"></i>
-                        </span>
-                        <span class="spec-content">
-                            <span class="spec-label">Marque</span>
-                            <span class="spec-value">{{ $produit->marque ?? 'Non spécifiée' }}</span>
-                        </span>
-                    </div>
-
-                    <div class="spec-item" id="spec-modele-{{ $produit->id }}">
-                        <span class="spec-icon">
-                            <i class="fas fa-cog"></i>
-                        </span>
-                        <span class="spec-content">
-                            <span class="spec-label">Modèle</span>
-                            <span class="spec-value">{{ $produit->modele ?? 'Standard' }}</span>
-                        </span>
-                    </div>
-
-                    <div class="spec-item" id="spec-stock-{{ $produit->id }}">
-                        <span class="spec-icon">
-                            <i class="fas fa-layer-group"></i>
-                        </span>
-                        <span class="spec-content">
-                            <span class="spec-label">Stock</span>
-                            <span class="spec-value stock-{{ $produit->stock_status }}" id="stock-value-{{ $produit->id }}">
-                                {{ $produit->stock_actuel }} {{ $produit->unite_mesure }}
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="product-actions" id="actions-{{ $produit->id }}">
-                    <button class="btn btn-details"
-                            id="detail-btn-{{ $produit->id }}"
-                            data-product-id="{{ $produit->id }}">
-                        <i class="fas fa-info-circle"></i>
-                        <span>Voir détails</span>
+        <!-- Modal pour les détails du produit -->
+        <div class="product-detail-modal" id="product-detail-modal-container">
+            <div class="modal-overlay" id="detail-modal-overlay"></div>
+            <div class="modal-container" id="detail-modal-content">
+                <div class="modal-header" id="detail-modal-header" style="width: 100%;">
+                    <h3 id="detail-modal-title">Détails du produit</h3>
+                    <button class="btn-close-modal" id="close-detail-modal-btn">
+                        <i class="fas fa-times"></i>
                     </button>
                 </div>
+                <div class="modal-body" id="product-detail-body">
+                    <!-- Contenu chargé dynamiquement -->
+                </div>
             </div>
         </div>
-        @endforeach
-    </div>
 
-    @if($produits->count() > 6)
-    <div class="products-action" id="products-action-container" data-aos="fade-up">
-        <button class="btn btn-more" id="show-more-products-btn">
-            <i class="fas fa-chevron-down"></i>
-            <span>Voir plus de produits</span>
-        </button>
-    </div>
-    @endif
-</section>
-
-<!-- Modal pour les détails du produit -->
-<div class="product-detail-modal" id="product-detail-modal-container">
-    <div class="modal-overlay" id="detail-modal-overlay"></div>
-    <div class="modal-container" id="detail-modal-content">
-        <div class="modal-header" id="detail-modal-header" style="width: 100%;">
-            <h3 id="detail-modal-title">Détails du produit</h3>
-            <button class="btn-close-modal" id="close-detail-modal-btn">
-                <i class="fas fa-times"></i>
-            </button>
+        <!-- Modal pour l'image zoomée -->
+        <div class="image-zoom-modal" id="image-zoom-modal-container">
+            <div class="modal-overlay" id="zoom-modal-overlay"></div>
+            <div class="modal-zoom-container" id="zoom-modal-content">
+                <button class="btn-close-zoom" id="close-zoom-modal-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+                <img id="zoomed-image-display" src="" alt="Image zoomée" class="zoom-image">
+            </div>
         </div>
-        <div class="modal-body" id="product-detail-body">
-            <!-- Contenu chargé dynamiquement -->
-        </div>
-    </div>
-</div>
 
-<!-- Modal pour l'image zoomée -->
-<div class="image-zoom-modal" id="image-zoom-modal-container">
-    <div class="modal-overlay" id="zoom-modal-overlay"></div>
-    <div class="modal-zoom-container" id="zoom-modal-content">
-        <button class="btn-close-zoom" id="close-zoom-modal-btn">
-            <i class="fas fa-times"></i>
-        </button>
-        <img id="zoomed-image-display" src="" alt="Image zoomée" class="zoom-image">
-    </div>
-</div>
-
-<style>
-/* ===== STYLES SPÉCIFIQUES PRODUITS (ID BASÉS) ===== */
-#products-section {
-    padding: 4rem 2rem;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-#products-title {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-#products-main-title {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-    position: relative;
-    display: inline-block;
-}
-
-#products-main-title::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: #e50914;
-    border-radius: 2px;
-}
-
-#products-subtitle {
-    color: #7f8c8d;
-    font-size: 1.1rem;
-    max-width: 600px;
-    margin: 1rem auto 0;
-}
-
-/* Grille des produits */
-#products-grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
-    margin: 3rem 0;
-}
-
-/* Carte produit */
-.product-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-}
-
-/* Badges */
-.product-badge {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    display: flex;
-    justify-content: space-between;
-    z-index: 2;
-}
-
-/* Image produit */
-.product-image {
-    height: 220px;
-    position: relative;
-    overflow: hidden;
-    background: #f5f7fa;
-}
-
-.product-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.product-card:hover .product-img {
-    transform: scale(1.05);
-}
-
-.product-image-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.product-image-placeholder i {
-    font-size: 3rem;
-    opacity: 0.8;
-}
-
-.product-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.product-card:hover .product-overlay {
-    opacity: 1;
-}
-
-.zoom-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(255,255,255,0.9);
-    color: #333;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.zoom-btn:hover {
-    background: white;
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* Informations produit */
-.product-info {
-    padding: 1.5rem;
-}
-
-.product-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-}
-
-.product-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin: 0;
-    line-height: 1.3;
-    flex: 1;
-}
-
-.product-price {
-    text-align: right;
-    margin-left: 1rem;
-}
-
-.current-price {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #e50914;
-    display: block;
-    line-height: 1;
-}
-
-.price-ttc {
-    font-size: 0.8rem;
-    color: #7f8c8d;
-    font-weight: 500;
-}
-
-.product-description {
-    color: #5a6268;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin: 1rem 0;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-}
-
-/* Spécifications */
-.product-specs {
-    margin: 1.5rem 0;
-}
-
-.spec-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.8rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-}
-
-.spec-item:hover {
-    background: #f8f9fa;
-}
-
-.spec-icon {
-    width: 32px;
-    height: 32px;
-    background: #e8f4fc;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.8rem;
-    color: #3498db;
-    font-size: 0.9rem;
-}
-
-.spec-content {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.spec-label {
-    font-size: 0.85rem;
-    color: #7f8c8d;
-    font-weight: 500;
-}
-
-.spec-value {
-    font-size: 0.9rem;
-    color: #2c3e50;
-    font-weight: 600;
-}
-
-/* Actions produit */
-.product-actions {
-    display: flex;
-    gap: 0.8rem;
-    margin-top: 1.5rem;
-}
-
-/* Bouton voir plus */
-#products-action-container {
-    text-align: center;
-    margin-top: 3rem;
-}
-
-#show-more-products-btn {
-    background: transparent;
-    border: 2px solid #3498db;
-    color: #3498db;
-    padding: 0.8rem 2rem;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-#show-more-products-btn:hover {
-    background: #3498db;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
-}
-
-/* ===== MODAL DÉTAILS ===== */
-#product-detail-modal-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    padding: 2rem;
-}
-
-#detail-modal-content {
-    position: relative;
-    background: white;
-    max-width: 900px;
-    max-height: 90vh;
-    margin: 0 auto;
-    border-radius: 20px;
-    overflow: hidden;
-    animation: productModalSlideIn 0.4s ease;
-}
-
-.product-actions {
-    width: 100%;
-}
-
-.product-actions .btn-details {
-    width: 100%;           /* prend toute la largeur */
-    display: flex;         /* pour aligner icône + texte */
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    background: #1a73e8;
-    color: #fff;
-    padding: 12px 0;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-}
-
-
-@keyframes productModalSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-#detail-modal-header {
-    padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #f00e0e 0%, #e60f0f 100%);
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#detail-modal-title {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 600;
-}
-
-#close-detail-modal-btn {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#close-detail-modal-btn:hover {
-    background: rgba(255,255,255,0.2);
-    transform: rotate(90deg);
-}
-
-#product-detail-body {
-    padding: 2rem;
-    overflow-y: auto;
-    max-height: calc(90vh - 70px);
-}
-
-/* Contenu modal */
-.detail-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-}
-
-.detail-image-container {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    background: #f8f9fa;
-    min-height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.detail-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 1rem;
-}
-
-.detail-image-placeholder {
-    width: 100%;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 15px;
-}
-
-.detail-image-placeholder i {
-    font-size: 4rem;
-    opacity: 0.8;
-}
-
-.detail-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.detail-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin: 0 0 0.5rem 0;
-}
-
-.detail-price {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #e50914;
-    margin-bottom: 1rem;
-}
-
-.detail-description {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border-left: 4px solid #3498db;
-}
-
-.detail-description h4 {
-    color: #2c3e50;
-    margin: 0 0 1rem 0;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.detail-description h4 i {
-    color: #3498db;
-}
-
-.detail-description p {
-    color: #5a6268;
-    line-height: 1.6;
-    margin: 0;
-    white-space: pre-line;
-}
-
-.detail-specs {
-    background: white;
-    border: 1px solid #e9ecef;
-    border-radius: 12px;
-    padding: 1.5rem;
-}
-
-.detail-specs h4 {
-    color: #2c3e50;
-    margin: 0 0 1.5rem 0;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.detail-specs h4 i {
-    color: #e74c3c;
-}
-
-.specs-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.spec-card {
-    background: #f8f9fa;
-    padding: 1rem;
-    border-radius: 10px;
-    border: 1px solid #e9ecef;
-    transition: all 0.3s ease;
-}
-
-.spec-card:hover {
-    background: #e9ecef;
-    transform: translateY(-2px);
-}
-
-.spec-label {
-    font-size: 0.8rem;
-    color: #7f8c8d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 0.3rem;
-    display: block;
-}
-
-.spec-value {
-    font-size: 0.95rem;
-    color: #2c3e50;
-    font-weight: 600;
-    display: block;
-}
-
-.spec-value.stock {
-    color: #27ae60;
-}
-
-/* ===== MODAL ZOOM ===== */
-#image-zoom-modal-container {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-}
-
-#zoom-modal-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-
-#close-zoom-modal-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(0,0,0,0.7);
-    border: none;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#close-zoom-modal-btn:hover {
-    background: rgba(0,0,0,0.9);
-    transform: rotate(90deg);
-}
-
-#zoomed-image-display {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-    border-radius: 10px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    animation: productZoomIn 0.3s ease;
-}
-
-@keyframes productZoomIn {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-    #products-section {
-        padding: 2rem 1rem;
-    }
-
-    #products-grid-container {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .detail-content {
-        grid-template-columns: 1fr;
-    }
-
-    .specs-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .product-actions {
-        flex-direction: column;
-    }
-}
-
-.extra-product {
-    display: none;
-}
-
-/* Animation spécifique pour les produits */
-@keyframes productCardAppear {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Classes d'état stock spécifiques aux produits */
-#products-section .stock-bon {
-    color: #27ae60 !important;
-}
-
-#products-section .stock-faible {
-    color: #f39c12 !important;
-}
-
-#products-section .stock-rupture {
-    color: #e74c3c !important;
-}
-
-/* Styles spécifiques pour les badges produits */
-#products-section .badge-danger {
-    background: rgba(220, 53, 69, 0.95) !important;
-    color: white !important;
-}
-
-#products-section .badge-warning {
-    background: rgba(255, 193, 7, 0.95) !important;
-    color: #212529 !important;
-}
-
-#products-section .badge-success {
-    background: rgba(40, 167, 69, 0.95) !important;
-    color: white !important;
-}
-
-#products-section .badge-type {
-    background: rgba(52, 152, 219, 0.95) !important;
-    color: white !important;
-}
-
-/* Styles pour les boutons spécifiques produits */
-#products-section .btn-details {
-    background: linear-gradient(135deg, #db3434 0%, #2980b9 100%) !important;
-    color: white !important;
-}
-
-#products-section .btn-details:hover {
-    background: linear-gradient(135deg, #2980b9 0%, #b10404 100%) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Éléments avec IDs spécifiques
-    const showMoreBtn = document.getElementById('show-more-products-btn');
-    const extraProducts = document.querySelectorAll('.extra-product');
-    const zoomModal = document.getElementById('image-zoom-modal-container');
-    const closeZoomModal = document.getElementById('close-zoom-modal-btn');
-    const zoomedImage = document.getElementById('zoomed-image-display');
-    const zoomButtons = document.querySelectorAll('.zoom-btn');
-    const detailModal = document.getElementById('product-detail-modal-container');
-    const closeDetailModal = document.getElementById('close-detail-modal-btn');
-    const detailButtons = document.querySelectorAll('.btn-details');
-    const detailContent = document.getElementById('product-detail-body');
-    const detailModalOverlay = document.getElementById('detail-modal-overlay');
-    const zoomModalOverlay = document.getElementById('zoom-modal-overlay');
-
-    let showingAll = false;
-
-    // Animation d'apparition pour les cartes produits
-    const productObserverOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const productObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'productCardAppear 0.6s ease forwards';
-                productObserver.unobserve(entry.target);
+        <style>
+            /* ===== STYLES SPÉCIFIQUES PRODUITS (ID BASÉS) ===== */
+            #products-section {
+                padding: 4rem 2rem;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             }
-        });
-    }, productObserverOptions);
 
-    document.querySelectorAll('.product-card').forEach(card => {
-        productObserver.observe(card);
-    });
-
-    // Bouton "Voir plus" - produits
-    if (showMoreBtn) {
-        showMoreBtn.addEventListener('click', function() {
-            if (!showingAll) {
-                extraProducts.forEach((product, index) => {
-                    setTimeout(() => {
-                        product.style.display = 'block';
-                        product.style.animation = 'productCardAppear 0.6s ease forwards';
-                        productObserver.observe(product);
-                    }, index * 100);
-                });
-                showMoreBtn.innerHTML = '<i class="fas fa-chevron-up"></i><span>Voir moins</span>';
-                showingAll = true;
-            } else {
-                extraProducts.forEach(product => {
-                    product.style.display = 'none';
-                });
-                showMoreBtn.innerHTML = '<i class="fas fa-chevron-down"></i><span>Voir plus de produits</span>';
-                showingAll = false;
+            #products-title {
+                text-align: center;
+                margin-bottom: 3rem;
             }
-        });
-    }
 
-    // Zoom d'image - produits
-    zoomButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const imageUrl = this.getAttribute('data-image');
-            zoomedImage.src = imageUrl;
-            zoomModal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-    });
+            #products-main-title {
+                font-size: 2.5rem;
+                color: #2c3e50;
+                margin-bottom: 0.5rem;
+                position: relative;
+                display: inline-block;
+            }
 
-    if (closeZoomModal) {
-        closeZoomModal.addEventListener('click', () => {
-            zoomModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
+            #products-main-title::after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 60px;
+                height: 4px;
+                background: #e50914;
+                border-radius: 2px;
+            }
 
-    if (zoomModalOverlay) {
-        zoomModalOverlay.addEventListener('click', function(e) {
-            zoomModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
+            #products-subtitle {
+                color: #7f8c8d;
+                font-size: 1.1rem;
+                max-width: 600px;
+                margin: 1rem auto 0;
+            }
 
-    // Détails produit
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-product-id');
-            const productCard = document.getElementById(`product-card-${productId}`);
-            const productName = productCard ?
-                productCard.querySelector('.product-title').textContent : 'Produit';
+            /* Grille des produits */
+            #products-grid-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 2rem;
+                margin: 3rem 0;
+            }
 
-            fetch(`/produit/${productId}/details`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.json();
-                })
-                .then(data => {
-                    detailContent.innerHTML = `
+            /* Carte produit */
+            .product-card {
+                background: white;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                position: relative;
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            .product-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            /* Badges */
+            .product-badge {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                display: flex;
+                justify-content: space-between;
+                z-index: 2;
+            }
+
+            /* Image produit */
+            .product-image {
+                height: 220px;
+                position: relative;
+                overflow: hidden;
+                background: #f5f7fa;
+            }
+
+            .product-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+            .product-card:hover .product-img {
+                transform: scale(1.05);
+            }
+
+            .product-image-placeholder {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+
+            .product-image-placeholder i {
+                font-size: 3rem;
+                opacity: 0.8;
+            }
+
+            .product-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.4);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .product-card:hover .product-overlay {
+                opacity: 1;
+            }
+
+            .zoom-btn {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: none;
+                background: rgba(255, 255, 255, 0.9);
+                color: #333;
+                font-size: 1.2rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .zoom-btn:hover {
+                background: white;
+                transform: scale(1.1);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Informations produit */
+            .product-info {
+                padding: 1.5rem;
+            }
+
+            .product-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+            }
+
+            .product-title {
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: #2c3e50;
+                margin: 0;
+                line-height: 1.3;
+                flex: 1;
+            }
+
+            .product-price {
+                text-align: right;
+                margin-left: 1rem;
+            }
+
+            .current-price {
+                font-size: 1.5rem;
+                font-weight: 800;
+                color: #e50914;
+                display: block;
+                line-height: 1;
+            }
+
+            .price-ttc {
+                font-size: 0.8rem;
+                color: #7f8c8d;
+                font-weight: 500;
+            }
+
+            .product-description {
+                color: #5a6268;
+                font-size: 0.95rem;
+                line-height: 1.5;
+                margin: 1rem 0;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #eee;
+            }
+
+            /* Spécifications */
+            .product-specs {
+                margin: 1.5rem 0;
+            }
+
+            .spec-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.8rem;
+                padding: 0.5rem;
+                border-radius: 8px;
+                transition: background 0.3s ease;
+            }
+
+            .spec-item:hover {
+                background: #f8f9fa;
+            }
+
+            .spec-icon {
+                width: 32px;
+                height: 32px;
+                background: #e8f4fc;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 0.8rem;
+                color: #3498db;
+                font-size: 0.9rem;
+            }
+
+            .spec-content {
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .spec-label {
+                font-size: 0.85rem;
+                color: #7f8c8d;
+                font-weight: 500;
+            }
+
+            .spec-value {
+                font-size: 0.9rem;
+                color: #2c3e50;
+                font-weight: 600;
+            }
+
+            /* Actions produit */
+            .product-actions {
+                display: flex;
+                gap: 0.8rem;
+                margin-top: 1.5rem;
+            }
+
+            /* Bouton voir plus */
+            #products-action-container {
+                text-align: center;
+                margin-top: 3rem;
+            }
+
+            #show-more-products-btn {
+                background: transparent;
+                border: 2px solid #3498db;
+                color: #3498db;
+                padding: 0.8rem 2rem;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+            #show-more-products-btn:hover {
+                background: #3498db;
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+            }
+
+            /* ===== MODAL DÉTAILS ===== */
+            #product-detail-modal-container {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                padding: 2rem;
+            }
+
+            #detail-modal-content {
+                position: relative;
+                background: white;
+                max-width: 900px;
+                max-height: 90vh;
+                margin: 0 auto;
+                border-radius: 20px;
+                overflow: hidden;
+                animation: productModalSlideIn 0.4s ease;
+            }
+
+            .product-actions {
+                width: 100%;
+            }
+
+            .product-actions .btn-details {
+                width: 100%;
+                /* prend toute la largeur */
+                display: flex;
+                /* pour aligner icône + texte */
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                background: #1a73e8;
+                color: #fff;
+                padding: 12px 0;
+                border-radius: 12px;
+                font-size: 1rem;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+            }
+
+
+            @keyframes productModalSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px) scale(0.95);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            #detail-modal-header {
+                padding: 1.5rem 2rem;
+                background: linear-gradient(135deg, #f00e0e 0%, #e60f0f 100%);
+                color: white;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            #detail-modal-title {
+                margin: 0;
+                font-size: 1.5rem;
+                font-weight: 600;
+            }
+
+            #close-detail-modal-btn {
+                background: rgba(255, 255, 255, 0.1);
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #close-detail-modal-btn:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: rotate(90deg);
+            }
+
+            #product-detail-body {
+                padding: 2rem;
+                overflow-y: auto;
+                max-height: calc(90vh - 70px);
+            }
+
+            /* Contenu modal */
+            .detail-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .detail-image-container {
+                position: relative;
+                border-radius: 15px;
+                overflow: hidden;
+                background: #f8f9fa;
+                min-height: 300px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .detail-image {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                padding: 1rem;
+            }
+
+            .detail-image-placeholder {
+                width: 100%;
+                height: 300px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border-radius: 15px;
+            }
+
+            .detail-image-placeholder i {
+                font-size: 4rem;
+                opacity: 0.8;
+            }
+
+            .detail-info {
+                display: flex;
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .detail-title {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #2c3e50;
+                margin: 0 0 0.5rem 0;
+            }
+
+            .detail-price {
+                font-size: 2.2rem;
+                font-weight: 800;
+                color: #e50914;
+                margin-bottom: 1rem;
+            }
+
+            .detail-description {
+                background: #f8f9fa;
+                padding: 1.5rem;
+                border-radius: 12px;
+                border-left: 4px solid #3498db;
+            }
+
+            .detail-description h4 {
+                color: #2c3e50;
+                margin: 0 0 1rem 0;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .detail-description h4 i {
+                color: #3498db;
+            }
+
+            .detail-description p {
+                color: #5a6268;
+                line-height: 1.6;
+                margin: 0;
+                white-space: pre-line;
+            }
+
+            .detail-specs {
+                background: white;
+                border: 1px solid #e9ecef;
+                border-radius: 12px;
+                padding: 1.5rem;
+            }
+
+            .detail-specs h4 {
+                color: #2c3e50;
+                margin: 0 0 1.5rem 0;
+                font-size: 1.1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .detail-specs h4 i {
+                color: #e74c3c;
+            }
+
+            .specs-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .spec-card {
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 10px;
+                border: 1px solid #e9ecef;
+                transition: all 0.3s ease;
+            }
+
+            .spec-card:hover {
+                background: #e9ecef;
+                transform: translateY(-2px);
+            }
+
+            .spec-label {
+                font-size: 0.8rem;
+                color: #7f8c8d;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 0.3rem;
+                display: block;
+            }
+
+            .spec-value {
+                font-size: 0.95rem;
+                color: #2c3e50;
+                font-weight: 600;
+                display: block;
+            }
+
+            .spec-value.stock {
+                color: #27ae60;
+            }
+
+            /* ===== MODAL ZOOM ===== */
+            #image-zoom-modal-container {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10000;
+            }
+
+            #zoom-modal-content {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem;
+            }
+
+            #close-zoom-modal-btn {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                background: rgba(0, 0, 0, 0.7);
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                z-index: 10;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #close-zoom-modal-btn:hover {
+                background: rgba(0, 0, 0, 0.9);
+                transform: rotate(90deg);
+            }
+
+            #zoomed-image-display {
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+                border-radius: 10px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                animation: productZoomIn 0.3s ease;
+            }
+
+            @keyframes productZoomIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.8);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            /* ===== RESPONSIVE ===== */
+            @media (max-width: 768px) {
+                #products-section {
+                    padding: 2rem 1rem;
+                }
+
+                #products-grid-container {
+                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                    gap: 1.5rem;
+                }
+
+                .detail-content {
+                    grid-template-columns: 1fr;
+                }
+
+                .specs-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .product-actions {
+                    flex-direction: column;
+                }
+            }
+
+            .extra-product {
+                display: none;
+            }
+
+            /* Animation spécifique pour les produits */
+            @keyframes productCardAppear {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Classes d'état stock spécifiques aux produits */
+            #products-section .stock-bon {
+                color: #27ae60 !important;
+            }
+
+            #products-section .stock-faible {
+                color: #f39c12 !important;
+            }
+
+            #products-section .stock-rupture {
+                color: #e74c3c !important;
+            }
+
+            /* Styles spécifiques pour les badges produits */
+            #products-section .badge-danger {
+                background: rgba(220, 53, 69, 0.95) !important;
+                color: white !important;
+            }
+
+            #products-section .badge-warning {
+                background: rgba(255, 193, 7, 0.95) !important;
+                color: #212529 !important;
+            }
+
+            #products-section .badge-success {
+                background: rgba(40, 167, 69, 0.95) !important;
+                color: white !important;
+            }
+
+            #products-section .badge-type {
+                background: rgba(52, 152, 219, 0.95) !important;
+                color: white !important;
+            }
+
+            /* Styles pour les boutons spécifiques produits */
+            #products-section .btn-details {
+                background: linear-gradient(135deg, #db3434 0%, #2980b9 100%) !important;
+                color: white !important;
+            }
+
+            #products-section .btn-details:hover {
+                background: linear-gradient(135deg, #2980b9 0%, #b10404 100%) !important;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Éléments avec IDs spécifiques
+                const showMoreBtn = document.getElementById('show-more-products-btn');
+                const extraProducts = document.querySelectorAll('.extra-product');
+                const zoomModal = document.getElementById('image-zoom-modal-container');
+                const closeZoomModal = document.getElementById('close-zoom-modal-btn');
+                const zoomedImage = document.getElementById('zoomed-image-display');
+                const zoomButtons = document.querySelectorAll('.zoom-btn');
+                const detailModal = document.getElementById('product-detail-modal-container');
+                const closeDetailModal = document.getElementById('close-detail-modal-btn');
+                const detailButtons = document.querySelectorAll('.btn-details');
+                const detailContent = document.getElementById('product-detail-body');
+                const detailModalOverlay = document.getElementById('detail-modal-overlay');
+                const zoomModalOverlay = document.getElementById('zoom-modal-overlay');
+
+                let showingAll = false;
+
+                // Animation d'apparition pour les cartes produits
+                const productObserverOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -100px 0px'
+                };
+
+                const productObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.animation = 'productCardAppear 0.6s ease forwards';
+                            productObserver.unobserve(entry.target);
+                        }
+                    });
+                }, productObserverOptions);
+
+                document.querySelectorAll('.product-card').forEach(card => {
+                    productObserver.observe(card);
+                });
+
+                // Bouton "Voir plus" - produits
+                if (showMoreBtn) {
+                    showMoreBtn.addEventListener('click', function() {
+                        if (!showingAll) {
+                            extraProducts.forEach((product, index) => {
+                                setTimeout(() => {
+                                    product.style.display = 'block';
+                                    product.style.animation =
+                                        'productCardAppear 0.6s ease forwards';
+                                    productObserver.observe(product);
+                                }, index * 100);
+                            });
+                            showMoreBtn.innerHTML = '<i class="fas fa-chevron-up"></i><span>Voir moins</span>';
+                            showingAll = true;
+                        } else {
+                            extraProducts.forEach(product => {
+                                product.style.display = 'none';
+                            });
+                            showMoreBtn.innerHTML =
+                                '<i class="fas fa-chevron-down"></i><span>Voir plus de produits</span>';
+                            showingAll = false;
+                        }
+                    });
+                }
+
+                // Zoom d'image - produits
+                zoomButtons.forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const imageUrl = this.getAttribute('data-image');
+                        zoomedImage.src = imageUrl;
+                        zoomModal.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    });
+                });
+
+                if (closeZoomModal) {
+                    closeZoomModal.addEventListener('click', () => {
+                        zoomModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+
+                if (zoomModalOverlay) {
+                    zoomModalOverlay.addEventListener('click', function(e) {
+                        zoomModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+
+                // Détails produit
+                detailButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const productId = this.getAttribute('data-product-id');
+                        const productCard = document.getElementById(`product-card-${productId}`);
+                        const productName = productCard ?
+                            productCard.querySelector('.product-title').textContent : 'Produit';
+
+                        fetch(`/produit/${productId}/details`)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.json();
+                            })
+                            .then(data => {
+                                detailContent.innerHTML = `
                         <div class="detail-content">
                             <div class="detail-image-container">
                                 ${data.image ?
                                     `<img src="${data.image}" alt="${data.nom}" class="detail-image">` :
                                     `<div class="detail-image-placeholder">
-                                        <i class="fas fa-box-open"></i>
-                                    </div>`
+                                                        <i class="fas fa-box-open"></i>
+                                                    </div>`
                                 }
                             </div>
                             <div class="detail-info">
@@ -2146,12 +2277,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
 
-                    detailModal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
-                })
-                .catch(error => {
-                    console.error('Erreur:', error);
-                    detailContent.innerHTML = `
+                                detailModal.style.display = 'block';
+                                document.body.style.overflow = 'hidden';
+                            })
+                            .catch(error => {
+                                console.error('Erreur:', error);
+                                detailContent.innerHTML = `
                         <div style="text-align: center; padding: 3rem;">
                             <i class="fas fa-exclamation-triangle fa-3x" style="color:#e74c3c;"></i>
                             <h3>Erreur de chargement</h3>
@@ -2161,66 +2292,66 @@ document.addEventListener('DOMContentLoaded', function() {
                             </button>
                         </div>
                     `;
-                    detailModal.style.display = 'block';
-                    document.body.style.overflow = 'hidden';
+                                detailModal.style.display = 'block';
+                                document.body.style.overflow = 'hidden';
+                            });
+                    });
                 });
-        });
-    });
 
-    // Fermer modal détails
-    if (closeDetailModal) {
-        closeDetailModal.addEventListener('click', () => {
-            detailModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
+                // Fermer modal détails
+                if (closeDetailModal) {
+                    closeDetailModal.addEventListener('click', () => {
+                        detailModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
 
-    if (detailModalOverlay) {
-        detailModalOverlay.addEventListener('click', function(e) {
-            detailModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-    }
+                if (detailModalOverlay) {
+                    detailModalOverlay.addEventListener('click', function(e) {
+                        detailModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
 
-    // Fermer avec ESC
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            if (zoomModal.style.display === 'block') {
-                zoomModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-            if (detailModal.style.display === 'block') {
-                detailModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
-        }
-    });
+                // Fermer avec ESC
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        if (zoomModal.style.display === 'block') {
+                            zoomModal.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                        if (detailModal.style.display === 'block') {
+                            detailModal.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                    }
+                });
 
-    // Toast notification spécifique aux produits
-    function showProductToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'product-toast-notification';
-        toast.innerHTML = `
+                // Toast notification spécifique aux produits
+                function showProductToast(message) {
+                    const toast = document.createElement('div');
+                    toast.className = 'product-toast-notification';
+                    toast.innerHTML = `
             <i class="fas fa-check-circle"></i>
             <span>${message}</span>
         `;
-        document.body.appendChild(toast);
+                    document.body.appendChild(toast);
 
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
+                    setTimeout(() => {
+                        toast.classList.add('show');
+                    }, 10);
 
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }, 3000);
-    }
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => {
+                            toast.remove();
+                        }, 300);
+                    }, 3000);
+                }
 
-    // Styles pour le toast spécifique produits
-    const productToastStyle = document.createElement('style');
-    productToastStyle.textContent = `
+                // Styles pour le toast spécifique produits
+                const productToastStyle = document.createElement('style');
+                productToastStyle.textContent = `
         .product-toast-notification {
             position: fixed;
             bottom: 20px;
@@ -2248,164 +2379,205 @@ document.addEventListener('DOMContentLoaded', function() {
             font-size: 1.2rem;
         }
     `;
-    document.head.appendChild(productToastStyle);
-});
-</script>
+                document.head.appendChild(productToastStyle);
+            });
+        </script>
 
 
 
         <!-- Contact Section -->
-       <section class="contact" id="contact">
+        <section class="contact" id="contact">
 
-    <style>
-        #contact {
-            background: #0a0a0a;
-            padding: 4rem 2rem;
-            color: #fff;
-        }
+            <style>
+                #contact {
+                    background: #0a0a0a;
+                    padding: 4rem 2rem;
+                    color: #fff;
+                }
 
-        #contact .contact-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            align-items: start;
-        }
+                #contact .contact-container {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                    gap: 2.5rem;
+                    align-items: start;
+                }
 
-        #contact h2,
-        #contact h3 {
-            color: #e50914; /* Rouge lumineux style Netflix */
-            text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
-        }
+                #contact h2,
+                #contact h3 {
+                    color: #e50914;
+                    /* Rouge lumineux style Netflix */
+                    text-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+                }
 
-        #contact p {
-            color: #ccc;
-        }
+                #contact p {
+                    color: #ccc;
+                }
 
-        /* Items contact */
-        .contact-item {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
-            align-items: center;
-        }
+                /* Items contact */
+                .contact-item {
+                    display: flex;
+                    gap: 1rem;
+                    margin-bottom: 1.2rem;
+                    align-items: center;
+                }
 
-        .contact-item i {
-            font-size: 1.6rem;
-            color: #e50914;
-            text-shadow: 0 0 6px rgba(229, 9, 20, 0.7);
-        }
+                .contact-item i {
+                    font-size: 1.6rem;
+                    color: #e50914;
+                    text-shadow: 0 0 6px rgba(229, 9, 20, 0.7);
+                }
 
-        /* Formulaire */
-        #contactForm input,
-        #contactForm select {
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-            outline: none;
-            box-shadow: 0 0 10px rgba(100, 0, 0, 0.3);
-            transition: 0.3s;
-        }
+                /* Formulaire */
+                #contactForm input,
+                #contactForm select {
+                    padding: 1rem;
+                    border-radius: 8px;
+                    border: 1px solid #444;
+                    background: #111;
+                    color: white;
+                    outline: none;
+                    box-shadow: 0 0 10px rgba(100, 0, 0, 0.3);
+                    transition: 0.3s;
+                }
 
-        #contactForm input:focus,
-        #contactForm select:focus {
-            border-color: #e50914;
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
-        }
+                #contactForm input:focus,
+                #contactForm select:focus {
+                    border-color: #e50914;
+                    box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
+                }
 
-        /* Bouton */
-        .btn-send {
-            padding: 1rem;
-            border-radius: 8px;
-            background: #e50914;
-            color: white;
-            border: none;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
-            transition: 0.3s;
-        }
+                /* Bouton */
+                .btn-send {
+                    padding: 1rem;
+                    border-radius: 8px;
+                    background: #e50914;
+                    color: white;
+                    border: none;
+                    font-size: 1rem;
+                    font-weight: bold;
+                    cursor: pointer;
+                    box-shadow: 0 0 15px rgba(229, 9, 20, 0.7);
+                    transition: 0.3s;
+                }
 
-        .btn-send:hover {
-            background: #ff1620;
-            box-shadow: 0 0 20px rgba(255, 22, 32, 0.9);
-            transform: translateY(-2px);
-        }
-    </style>
+                .btn-send:hover {
+                    background: #ff1620;
+                    box-shadow: 0 0 20px rgba(255, 22, 32, 0.9);
+                    transform: translateY(-2px);
+                }
+            </style>
 
-    <div class="contact-container">
+            <div class="contact-container">
 
-        <!-- Informations de contact -->
-        <div class="contact-info">
-            <h2>Prenez Contact</h2>
-            <p>Notre équipe est à votre disposition pour répondre à toutes vos questions et planifier votre
-                rendez-vous.</p>
+                <!-- Informations de contact -->
+                <div class="contact-info">
+                    <h2>Prenez Contact</h2>
+                    <p>Notre équipe est à votre disposition pour répondre à toutes vos questions et planifier votre
+                        rendez-vous.</p>
 
-            <div class="contact-details">
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <strong>Adresse</strong>
-                        <p>123 Rue du Garage, 75000 Paris</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <strong>Adresse</strong>
+                                <p>123 Rue du Garage, 75000 Cotonou</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <strong>Téléphone</strong>
+                                <p>01 23 45 67 89</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <strong>Email</strong>
+                                <p>contact@garagepro.fr</p>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <div>
-                        <strong>Téléphone</strong>
-                        <p>01 23 45 67 89</p>
-                    </div>
+                <!-- Formulaire -->
+                <div
+                    style="background: #111; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(229,9,20,0.3);">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Demande de Rendez-vous</h3>
+
+                    <form id="contactForm" style="display: grid; gap: 1rem;">
+
+                        <input id="name" type="text" placeholder="Votre nom">
+                        <input id="phone" type="tel" placeholder="Téléphone">
+                        <input id="email" type="email" placeholder="Email">
+
+                        <select id="service">
+                            <option value="">Type de service</option>
+                            <option>Réparation</option>
+                            <option>Entretien</option>
+                            <option>Pneus</option>
+                            <option>Diagnostic</option>
+                        </select>
+
+                        <button type="button" class="btn-send" onclick="sendEmail()">
+                            <i class="fas fa-paper-plane"></i> Envoyer la demande
+                        </button>
+
+                    </form>
                 </div>
 
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <div>
-                        <strong>Email</strong>
-                        <p>contact@garagepro.fr</p>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <strong>Horaires</strong>
-                        <p>Lun-Ven: 8h-19h | Sam: 9h-18h</p>
-                    </div>
-                </div>
             </div>
-        </div>
 
-        <!-- Formulaire -->
-        <div style="background: #111; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(229,9,20,0.3);">
-            <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Demande de Rendez-vous</h3>
+        </section>
 
-            <form id="contactForm" style="display: grid; gap: 1rem;">
 
-                <input id="name" type="text" placeholder="Votre nom">
-                <input id="phone" type="tel" placeholder="Téléphone">
-                <input id="email" type="email" placeholder="Email">
+        <!-- Google Map Section -->
+        <section class="map" id="map">
+            <style>
+                html,
+                body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100%;
+                }
 
-                <select id="service">
-                    <option value="">Type de service</option>
-                    <option>Réparation</option>
-                    <option>Entretien</option>
-                    <option>Pneus</option>
-                    <option>Diagnostic</option>
-                </select>
+                #map {
+                    background: #0a0a0a;
+                    padding: 0;
+                    color: #fff;
+                    width: 100%;
+                    height: 500px;
+                    position: relative;
+                }
 
-                <button type="button" class="btn-send" onclick="sendEmail()">
-                    <i class="fas fa-paper-plane"></i> Envoyer la demande
-                </button>
+                #map iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: 0;
+                }
 
-            </form>
-        </div>
 
-    </div>
+                #map h2,
+                #map h3,
+                #map p {
+                    position: absolute;
+                    top: 10px;
+                    left: 20px;
+                    color: #fff;
+                    z-index: 2;
+                }
+            </style>
 
-</section>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.121823171401!2d2.335174475785061!3d6.378271824832322!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1023576c47850fe9%3A0xc67088be44709da7!2sLE%20CH%C3%82TEAU%20-%20MAISON%20DES%20JEUNES!5e0!3m2!1sfr!2sbj!4v1765830156397!5m2!1sfr!2sbj"
+                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </section>
+
 
 
         <!-- SCRIPT JS POUR ENVOYER PAR MAIL -->

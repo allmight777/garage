@@ -3,22 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Vente;
 use App\Models\Client;
-use App\Models\Produit;
 use App\Models\LigneVente;
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Produit;
+use App\Models\Vente;
 use Carbon\Carbon;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class VenteController extends Controller
 {
     // Liste des ventes avec statistiques
-  public function index(Request $request)
+    public function index(Request $request)
     {
         $query = Vente::with(['client', 'vendeur', 'ligneVentes.produit'])
             ->latest();
@@ -48,7 +45,7 @@ class VenteController extends Controller
             'total' => $ventesTerminees->sum('montant_total'),
             'aujourdhui' => $ventesAujourdhui->sum('montant_total'),
             'nombre' => $ventesTerminees->count(),
-            'nombre_aujourdhui' => $ventesAujourdhui->count()
+            'nombre_aujourdhui' => $ventesAujourdhui->count(),
         ];
 
         // Données RÉELLES pour les graphiques
@@ -64,9 +61,9 @@ class VenteController extends Controller
 
         // 1. Ventes par jour (7 derniers jours)
         $ventesParJour = Vente::select(
-                DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(montant_total) as total')
-            )
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('SUM(montant_total) as total')
+        )
             ->where('statut', 'terminee')
             ->where('created_at', '>=', $now->copy()->subDays(7))
             ->groupBy('date')
@@ -87,10 +84,10 @@ class VenteController extends Controller
 
         // 2. Mode de paiement
         $modePaiement = Vente::select(
-                'mode_paiement',
-                DB::raw('COUNT(*) as count'),
-                DB::raw('SUM(montant_total) as total')
-            )
+            'mode_paiement',
+            DB::raw('COUNT(*) as count'),
+            DB::raw('SUM(montant_total) as total')
+        )
             ->where('statut', 'terminee')
             ->where('created_at', '>=', $now->copy()->subDays(30))
             ->groupBy('mode_paiement')
@@ -105,9 +102,9 @@ class VenteController extends Controller
 
         // 3. Top 5 produits (depuis 30 jours)
         $topProduits = LigneVente::select(
-                'produits.nom',
-                DB::raw('SUM(ligne_ventes.quantite) as total_quantite')
-            )
+            'produits.nom',
+            DB::raw('SUM(ligne_ventes.quantite) as total_quantite')
+        )
             ->join('produits', 'ligne_ventes.produit_id', '=', 'produits.id')
             ->join('ventes', 'ligne_ventes.vente_id', '=', 'ventes.id')
             ->where('ventes.statut', 'terminee')
@@ -126,9 +123,9 @@ class VenteController extends Controller
 
         // 4. Évolution CA mensuel (12 derniers mois)
         $evolutionCA = Vente::select(
-                DB::raw("DATE_FORMAT(created_at, '%Y-%m') as mois"),
-                DB::raw('SUM(montant_total) as total')
-            )
+            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as mois"),
+            DB::raw('SUM(montant_total) as total')
+        )
             ->where('statut', 'terminee')
             ->where('created_at', '>=', $now->copy()->subMonths(12))
             ->groupBy('mois')
@@ -148,9 +145,9 @@ class VenteController extends Controller
 
         // 5. Heures de vente
         $heuresVente = Vente::select(
-                DB::raw('HOUR(created_at) as heure'),
-                DB::raw('COUNT(*) as count')
-            )
+            DB::raw('HOUR(created_at) as heure'),
+            DB::raw('COUNT(*) as count')
+        )
             ->where('statut', 'terminee')
             ->groupBy('heure')
             ->orderBy('heure')
@@ -159,7 +156,7 @@ class VenteController extends Controller
         $heuresLabels = [];
         $heuresData = [];
         for ($h = 8; $h <= 20; $h += 2) {
-            $heuresLabels[] = $h . 'h';
+            $heuresLabels[] = $h.'h';
 
             $venteHeure = $heuresVente->firstWhere('heure', $h);
             $heuresData[] = $venteHeure ? $venteHeure->count : 0;
@@ -168,28 +165,27 @@ class VenteController extends Controller
         return [
             'ventes_par_jour' => [
                 'labels' => $joursLabels,
-                'data' => $joursData
+                'data' => $joursData,
             ],
             'mode_paiement' => [
                 'labels' => $modeLabels,
                 'data' => $modeData,
-                'totaux' => $modePaiement->pluck('total')->toArray()
+                'totaux' => $modePaiement->pluck('total')->toArray(),
             ],
             'top_produits' => [
                 'labels' => $produitsLabels,
-                'data' => $produitsData
+                'data' => $produitsData,
             ],
             'evolution_ca' => [
                 'labels' => $caLabels,
-                'data' => $caData
+                'data' => $caData,
             ],
             'heures_vente' => [
                 'labels' => $heuresLabels,
-                'data' => $heuresData
-            ]
+                'data' => $heuresData,
+            ],
         ];
     }
-
 
     // Page création vente
     public function create()
@@ -215,7 +211,7 @@ class VenteController extends Controller
             'produits.*.id' => 'required|exists:produits,id',
             'produits.*.quantite' => 'required|integer|min:1',
             'mode_paiement' => 'required|in:especes,mobile_money,carte,cheque',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -223,12 +219,12 @@ class VenteController extends Controller
         try {
             // Créer client si nouveau
             $clientId = $request->client_id;
-            if (!$clientId && $request->client_nom) {
+            if (! $clientId && $request->client_nom) {
                 $client = Client::create([
                     'nom' => $request->client_nom,
                     'prenom' => $request->client_prenom ?? null,
                     'telephone' => $request->client_telephone,
-                    'adresse' => $request->client_adresse
+                    'adresse' => $request->client_adresse,
                 ]);
                 $clientId = $client->id;
             }
@@ -242,7 +238,7 @@ class VenteController extends Controller
                 'mode_paiement' => $request->mode_paiement,
                 'notes' => $request->notes,
                 'user_id' => Auth::id(),
-                'statut' => 'terminee' // Vente terminée par défaut
+                'statut' => 'terminee', // Vente terminée par défaut
             ]);
 
             $montantTotal = 0;
@@ -260,7 +256,7 @@ class VenteController extends Controller
                     'vente_id' => $vente->id,
                     'produit_id' => $produit->id,
                     'quantite' => $item['quantite'],
-                    'prix_unitaire' => $produit->prix_vente
+                    'prix_unitaire' => $produit->prix_vente,
                 ]);
 
                 $montantTotal += $item['quantite'] * $produit->prix_vente;
@@ -276,14 +272,15 @@ class VenteController extends Controller
                 'message' => 'Vente enregistrée avec succès!',
                 'vente_id' => $vente->id,
                 'numero_vente' => $vente->numero_vente,
-                'total' => number_format($montantTotal, 0, ',', ' ') . ' FCFA'
+                'total' => number_format($montantTotal, 0, ',', ' ').' FCFA',
             ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'message' => 'Erreur: ' . $e->getMessage()
+                'message' => 'Erreur: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -292,6 +289,7 @@ class VenteController extends Controller
     public function show(Vente $vente)
     {
         $vente->load(['client', 'vendeur', 'ligneVentes.produit']);
+
         return view('ventes.show', compact('vente'));
     }
 
@@ -328,7 +326,7 @@ class VenteController extends Controller
             'produits.*.quantite' => 'required|integer|min:1',
             'produits.*.prix' => 'required|numeric|min:0',
             'mode_paiement' => 'required|in:especes,mobile_money,carte,cheque',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -336,12 +334,12 @@ class VenteController extends Controller
         try {
             // Mettre à jour client
             $clientId = $request->client_id;
-            if (!$clientId && $request->client_nom) {
+            if (! $clientId && $request->client_nom) {
                 $client = Client::create([
                     'nom' => $request->client_nom,
                     'prenom' => $request->client_prenom ?? null,
                     'telephone' => $request->client_telephone,
-                    'adresse' => $request->client_adresse
+                    'adresse' => $request->client_adresse,
                 ]);
                 $clientId = $client->id;
             }
@@ -353,40 +351,71 @@ class VenteController extends Controller
                 'client_telephone' => $request->client_telephone,
                 'client_adresse' => $request->client_adresse,
                 'mode_paiement' => $request->mode_paiement,
-                'notes' => $request->notes
+                'notes' => $request->notes,
             ]);
-
-            // Supprimer toutes les anciennes lignes
-            $vente->ligneVentes()->delete();
 
             $montantTotal = 0;
 
-            // Ajouter les nouvelles lignes
+            // Récupérer les anciennes lignes AVANT toute modification
+            $anciennesLignes = $vente->ligneVentes;
+
+            // Stocker les anciennes quantités par produit
+            $anciennesQuantites = [];
+            foreach ($anciennesLignes as $ligne) {
+                $anciennesQuantites[$ligne->produit_id] = $ligne->quantite;
+            }
+
+            // ÉTAPE 1 : VÉRIFICATION du stock pour les nouvelles quantités
             foreach ($request->produits as $item) {
                 $produit = Produit::find($item['id']);
 
-                // Vérifier stock disponible (stock actuel + quantités précédentes)
-                $quantiteAncienne = $vente->ligneVentes()
-                    ->where('produit_id', $produit->id)
-                    ->sum('quantite');
+                // Calculer le stock disponible réel
+                $stockDisponible = $produit->stock_actuel;
 
-                $stockDisponible = $produit->stock_actuel + $quantiteAncienne;
-
-                if ($stockDisponible < $item['quantite']) {
-                    throw new \Exception("Stock insuffisant pour {$produit->nom}. Disponible: {$stockDisponible}");
+                // Si le produit était déjà dans la vente, ajouter sa quantité précédente
+                // (car on va la restaurer avant de déduire la nouvelle)
+                if (isset($anciennesQuantites[$produit->id])) {
+                    $stockDisponible += $anciennesQuantites[$produit->id];
                 }
 
+                if ($stockDisponible < $item['quantite']) {
+                    throw new \Exception("Stock insuffisant pour {$produit->nom}. Disponible: {$stockDisponible}, Demandé: {$item['quantite']}");
+                }
+            }
+
+            // ÉTAPE 2 : RESTAURATION du stock des anciennes lignes
+            foreach ($anciennesLignes as $ligne) {
+                $produit = $ligne->produit;
+                // Restaurer le stock (ajouter la quantité vendue)
+                $produit->stock_actuel += $ligne->quantite;
+                $produit->save();
+                $this->updateStockStatus($produit);
+            }
+
+            // ÉTAPE 3 : Supprimer les anciennes lignes
+            $vente->ligneVentes()->delete();
+
+            // ÉTAPE 4 : Ajouter les nouvelles lignes et déduire le stock
+            foreach ($request->produits as $item) {
+                $produit = Produit::find($item['id']);
+
+                // Créer la nouvelle ligne de vente
                 LigneVente::create([
                     'vente_id' => $vente->id,
                     'produit_id' => $produit->id,
                     'quantite' => $item['quantite'],
-                    'prix_unitaire' => $item['prix']
+                    'prix_unitaire' => $item['prix'],
                 ]);
+
+                // Déduire la nouvelle quantité du stock
+                $produit->stock_actuel -= $item['quantite'];
+                $produit->save();
+                $this->updateStockStatus($produit);
 
                 $montantTotal += $item['quantite'] * $item['prix'];
             }
 
-            // Mettre à jour total
+            // ÉTAPE 5 : Mettre à jour le total de la vente
             $vente->update(['montant_total' => $montantTotal]);
 
             DB::commit();
@@ -396,8 +425,25 @@ class VenteController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Erreur: ' . $e->getMessage());
+
+            return back()->with('error', 'Erreur: '.$e->getMessage());
         }
+    }
+
+    // Méthode pour mettre à jour le statut du stock
+    private function updateStockStatus(Produit $produit)
+    {
+        if ($produit->stock_actuel <= 0) {
+            $produit->stock_status = 'rupture';
+        } elseif ($produit->stock_actuel <= $produit->seuil_alerte) {
+            $produit->stock_status = 'faible';
+        } elseif ($produit->stock_actuel > $produit->seuil_alerte * 2) {
+            $produit->stock_status = 'normal';
+        } else {
+            $produit->stock_status = 'alerte';
+        }
+
+        $produit->save();
     }
 
     // Annuler une vente
@@ -428,7 +474,7 @@ class VenteController extends Controller
 
             $vente->update([
                 'statut' => 'annulee',
-                'notes' => ($vente->notes ?? '') . "\n[ANNULÉE le " . now()->format('d/m/Y H:i') . ']'
+                'notes' => ($vente->notes ?? '')."\n[ANNULÉE le ".now()->format('d/m/Y H:i').']',
             ]);
 
             DB::commit();
@@ -437,7 +483,8 @@ class VenteController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Erreur: ' . $e->getMessage());
+
+            return back()->with('error', 'Erreur: '.$e->getMessage());
         }
     }
 
@@ -446,22 +493,22 @@ class VenteController extends Controller
     {
         $search = $request->get('q');
 
-        $clients = Client::where(function($query) use ($search) {
-                $query->where('nom', 'like', "%{$search}%")
-                      ->orWhere('prenom', 'like', "%{$search}%")
-                      ->orWhere('telephone', 'like', "%{$search}%");
-            })
+        $clients = Client::where(function ($query) use ($search) {
+            $query->where('nom', 'like', "%{$search}%")
+                ->orWhere('prenom', 'like', "%{$search}%")
+                ->orWhere('telephone', 'like', "%{$search}%");
+        })
             ->limit(10)
             ->get()
-            ->map(function($client) {
+            ->map(function ($client) {
                 return [
                     'id' => $client->id,
-                    'text' => $client->nom_complet . ($client->telephone ? " - {$client->telephone}" : ''),
+                    'text' => $client->nom_complet.($client->telephone ? " - {$client->telephone}" : ''),
                     'nom' => $client->nom,
                     'prenom' => $client->prenom,
                     'telephone' => $client->telephone,
                     'adresse' => $client->adresse,
-                    'nom_complet' => $client->nom_complet
+                    'nom_complet' => $client->nom_complet,
                 ];
             });
 
@@ -474,14 +521,14 @@ class VenteController extends Controller
         $search = $request->get('q');
 
         $produits = Produit::where('stock_actuel', '>', 0)
-            ->where(function($query) use ($search) {
+            ->where(function ($query) use ($search) {
                 $query->where('nom', 'like', "%{$search}%")
-                      ->orWhere('reference', 'like', "%{$search}%")
-                      ->orWhere('marque', 'like', "%{$search}%");
+                    ->orWhere('reference', 'like', "%{$search}%")
+                    ->orWhere('marque', 'like', "%{$search}%");
             })
             ->limit(10)
             ->get()
-            ->map(function($produit) {
+            ->map(function ($produit) {
                 return [
                     'id' => $produit->id,
                     'nom' => $produit->nom,
@@ -490,7 +537,7 @@ class VenteController extends Controller
                     'prix_vente' => $produit->prix_vente,
                     'stock_actuel' => $produit->stock_actuel,
                     'seuil_alerte' => $produit->seuil_alerte,
-                    'prix_formatted' => number_format($produit->prix_vente, 0, ',', ' ') . ' FCFA'
+                    'prix_formatted' => number_format($produit->prix_vente, 0, ',', ' ').' FCFA',
                 ];
             });
 
@@ -501,6 +548,7 @@ class VenteController extends Controller
     public function imprimer(Vente $vente)
     {
         $vente->load(['client', 'vendeur', 'ligneVentes.produit']);
+
         return view('ventes.facture', compact('vente'));
     }
 
@@ -541,7 +589,7 @@ class VenteController extends Controller
             'ventesParJour' => $ventesParJour,
             'modePaiement' => $modePaiement,
             'topProduits' => $topProduits,
-            'ventesParHeure' => $ventesParHeure
+            'ventesParHeure' => $ventesParHeure,
         ];
     }
 
@@ -560,7 +608,7 @@ class VenteController extends Controller
             ->get();
 
         // Données formatées pour Chart.js
-        $labels = $ventesParJour->pluck('date')->map(function($date) {
+        $labels = $ventesParJour->pluck('date')->map(function ($date) {
             return date('d/m', strtotime($date));
         });
 
@@ -568,7 +616,7 @@ class VenteController extends Controller
 
         return response()->json([
             'labels' => $labels,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -587,14 +635,14 @@ class VenteController extends Controller
 
         $ventes = $query->get();
 
-        $fileName = 'ventes_' . date('Y-m-d_H-i') . '.csv';
+        $fileName = 'ventes_'.date('Y-m-d_H-i').'.csv';
 
         $headers = [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
         ];
 
-        $callback = function() use ($ventes) {
+        $callback = function () use ($ventes) {
             $file = fopen('php://output', 'w');
 
             // En-tête
@@ -606,7 +654,7 @@ class VenteController extends Controller
                 'Articles',
                 'Montant (FCFA)',
                 'Mode Paiement',
-                'Vendeur'
+                'Vendeur',
             ]);
 
             // Données
@@ -619,7 +667,7 @@ class VenteController extends Controller
                     $vente->ligneVentes->sum('quantite'),
                     $vente->montant_total,
                     $vente->mode_paiement_text,
-                    $vente->vendeur->name
+                    $vente->vendeur->name,
                 ]);
             }
 
@@ -627,71 +675,5 @@ class VenteController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
-    }
-
-    // Dashboard statistiques
-    public function dashboard()
-    {
-        $aujourdhui = now()->format('Y-m-d');
-        $hier = now()->subDay()->format('Y-m-d');
-        $ceMois = now()->format('Y-m');
-
-        // Ventes aujourd'hui
-        $ventesAujourdhui = Vente::where('statut', 'terminee')
-            ->whereDate('created_at', $aujourdhui)
-            ->count();
-
-        $caAujourdhui = Vente::where('statut', 'terminee')
-            ->whereDate('created_at', $aujourdhui)
-            ->sum('montant_total');
-
-        // Ventes hier
-        $caHier = Vente::where('statut', 'terminee')
-            ->whereDate('created_at', $hier)
-            ->sum('montant_total');
-
-        // Évolution
-        $evolution = $caHier > 0 ? (($caAujourdhui - $caHier) / $caHier * 100) : 0;
-
-        // Ventes ce mois
-        $ventesCeMois = Vente::where('statut', 'terminee')
-            ->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$ceMois])
-            ->count();
-
-        $caCeMois = Vente::where('statut', 'terminee')
-            ->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = ?", [$ceMois])
-            ->sum('montant_total');
-
-        // Top produits du mois
-        $topProduitsMois = LigneVente::join('produits', 'ligne_ventes.produit_id', '=', 'produits.id')
-            ->join('ventes', 'ligne_ventes.vente_id', '=', 'ventes.id')
-            ->where('ventes.statut', 'terminee')
-            ->whereRaw("DATE_FORMAT(ventes.created_at, '%Y-%m') = ?", [$ceMois])
-            ->selectRaw('produits.nom, SUM(ligne_ventes.quantite) as quantite')
-            ->groupBy('produits.id', 'produits.nom')
-            ->orderByDesc('quantite')
-            ->limit(5)
-            ->get();
-
-        // Alertes stock
-        $alertesStock = Produit::where('stock_actuel', '<=', DB::raw('seuil_alerte'))
-            ->where('stock_actuel', '>', 0)
-            ->orderBy('stock_actuel')
-            ->limit(10)
-            ->get();
-
-        $rupturesStock = Produit::where('stock_actuel', '<=', 0)
-            ->count();
-
-        return view('ventes.dashboard', compact(
-            'ventesAujourdhui',
-            'caAujourdhui',
-            'evolution',
-            'ventesCeMois',
-            'caCeMois',
-            'topProduitsMois',
-            'alertesStock',
-            'rupturesStock'
-        ));
     }
 }

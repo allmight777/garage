@@ -1584,9 +1584,6 @@
                 font-size: 1.5rem;
             }
         }
-
-
-
     </style>
 </head>
 
@@ -1695,6 +1692,8 @@
         }
     </style>
 
+
+
     <div class="footer-container">
         <div class="footer-column">
             <h3>GaragePro</h3>
@@ -1710,11 +1709,11 @@
         <div class="footer-column">
             <h3>Services</h3>
             <ul class="footer-links">
-                <li><a href="#">Réparation Mécanique</a></li>
-                <li><a href="#">Changement de Pneus</a></li>
-                <li><a href="#">Entretien Régulier</a></li>
-                <li><a href="#">Électricité Auto</a></li>
-                <li><a href="#">Contrôle Technique</a></li>
+                <li><a href="#nos-services">Réparation Mécanique</a></li>
+                <li><a href="#nos-services">Changement de Pneus</a></li>
+                <li><a href="#nos-services">Entretien Régulier</a></li>
+                <li><a href="#nos-services">Électricité Auto</a></li>
+                <li><a href="#nos-services">Contrôle Technique</a></li>
             </ul>
         </div>
 
@@ -1723,9 +1722,7 @@
             <ul class="footer-links">
                 <li><a href="#accueil">Accueil</a></li>
                 <li> <a href="{{ route('products.all') }}">Nos produits</a></li>
-                <li><a href="#model-3d">Produits 3D</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="#">Mentions Légales</a></li>
             </ul>
         </div>
 
@@ -1735,12 +1732,13 @@
             <div style="margin-top: 1rem; display: flex;">
                 <input type="email" placeholder="Votre email"
                     style="flex: 1; padding: 0.8rem; border-radius: 8px 0 0 8px;">
-                <button
-                    style="color: white; padding: 0.8rem 1rem; border-radius: 0 8px 8px 0;">
+                <a href="mailto:contact@glail.com"
+                    style="color: white; background-color: #f30b0b; padding: 0.8rem 1rem; border-radius: 0 8px 8px 0; display: flex; align-items: center; text-decoration: none;">
                     <i class="fas fa-paper-plane"></i>
-                </button>
+                </a>
             </div>
         </div>
+
     </div>
 
     <div class="copyright">

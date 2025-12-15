@@ -454,48 +454,43 @@
             <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
                 <div class="flex items-center md:ml-auto md:pr-4">
                     <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
-                        <span
-                            class="text-sm ease-soft leading-5.6 absolute z-50 -ml-px flex h-full items-center whitespace-nowrap rounded-lg rounded-tr-none rounded-br-none border border-r-0 border-transparent bg-transparent py-2 px-2.5 text-center font-normal text-slate-500 transition-all">
-                            <i class="fas fa-search"></i>
-                        </span>
-                        <input type="text"
-                            class="pl-8.75 text-sm focus:shadow-soft-primary-outline ease-soft w-1/100 leading-5.6 relative -ml-px block min-w-0 flex-auto rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 pr-3 text-gray-700 transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none focus:transition-shadow"
-                            placeholder="Type here..." />
+
                     </div>
                 </div>
+
                 <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                    <!-- online builder btn  -->
-                    <!-- <li class="flex items-center">
-                        <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-                      </li> -->
                     <li class="flex items-center">
-                        <a href="./pages/sign-in.html"
-                            class="block px-0 py-2 text-sm font-semibold transition-all ease-nav-brand text-slate-500">
-                            <i class="fa fa-user sm:mr-1"></i>
-                            <span class="hidden sm:inline">Sign In</span>
-                        </a>
-                    </li>
-                    <li class="flex items-center pl-4 xl:hidden">
-                        <a href="javascript:;" class="block p-0 text-sm transition-all ease-nav-brand text-slate-500"
-                            sidenav-trigger>
-                            <div class="w-4.5 overflow-hidden">
-                                <i
-                                    class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
-                                <i
-                                    class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
-                                <i class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                        @auth
+                            @php
+                                $user = Auth::user();
+                                $initiales = collect(explode(' ', $user->name))
+                                    ->map(fn($part) => strtoupper(substr($part, 0, 1)))
+                                    ->join('');
+                            @endphp
+
+                            <!-- Icône avec initiales -->
+                            <div
+                                class="user-icon flex items-center justify-center rounded-full bg-red-600 text-white w-10 h-10 mr-2 font-bold">
+                                {{ $initiales }}
                             </div>
-                        </a>
+                            <span class="text-sm font-semibold text-slate-700">{{ $user->name }}</span>
+                        @else
+                            <a href="{{ route('login') }}" class="block px-0 py-2 text-sm font-semibold text-slate-500">
+                                <i class="fa fa-user sm:mr-1"></i>
+                                <span class="hidden sm:inline">Sign In</span>
+                            </a>
+                        @endauth
                     </li>
-                    <li class="flex items-center px-4">
-                        <a href="javascript:;" class="p-0 text-sm transition-all ease-nav-brand text-slate-500">
-                            <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
-                            <!-- fixed-plugin-button-nav  -->
-                        </a>
-                    </li>
-
-
                 </ul>
+
+                <style>
+                    .user-icon {
+                        font-size: 0.9rem;
+                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                        background-color: #0B9EF3;
+                        color: rgb(255, 255, 255);
+                    }
+                </style>
             </div>
         </div>
     </nav>
@@ -604,7 +599,7 @@
                             $stockPercentage =
                                 $produit->seuil_alerte > 0
                                     ? ($produit->stock_actuel / $produit->seuil_alerte) * 100
-                                    : 0; // ou 100 si tu veux afficher critique
+                                    : 0; // ou 100 ou afficher critique
                             $stockClass = 'high';
                             if ($stockPercentage < 30) {
                                 $stockClass = 'low';
@@ -632,10 +627,9 @@
                 </h2>
 
                 <div class="image-container">
-                    @if ($produit->image && Storage::exists('public/produits/' . $produit->image))
+                    @if ($produit->image)
                         <img src="{{ asset('storage/produits/' . $produit->image) }}" alt="{{ $produit->nom }}"
-                            class="product-image"
-                            onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iI0YwRjBGMSIvPjxwYXRoIGQ9Ik01MCA4MEwxMDAgMTM1TDUwIDEzNUw4MCA4MFoiIGZpbGw9IiM2MTYxNkIiLz48cGF0aCBkPSJNMTAwIDExNUMxMjAuNzYyIDExNSAxMzUgMTAwLjc2MiAxMzUgODBDMTM1IDU5LjIzODIgMTIwLjc2MiA0NSAxMDAgNDVDNzkuMjM4MiA0NSA2NSA1OS4yMzgyIDY1IDgwQzY1IDEwMC43NjIgNzkuMjM4MiAxMTUgMTAwIDExNVoiIGZpbGw9IiM2MTYxNkIiLz48L3N2Zz4='">
+                            class="product-image">
                     @else
                         <div class="no-image">
                             <i class="fas fa-cube"></i>
