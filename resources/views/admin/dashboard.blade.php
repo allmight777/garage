@@ -1,12 +1,314 @@
 @extends('layouts.admin')
 
 @section('content')
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #7209b7;
+            --secondary-dark: #5a08a1;
+            --success: #06d6a0;
+            --success-dark: #00b894;
+            --danger: #ef476f;
+            --danger-dark: #d00000;
+            --warning: #ffd166;
+            --warning-dark: #ff9e00;
+            --info: #4cc9f0;
+            --info-dark: #4895ef;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --gray-light: #adb5bd;
+            --border: #e0e0e0;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-success: linear-gradient(135deg, #06d6a0, #00b894);
+            --gradient-warning: linear-gradient(135deg, #ffd166, #ff9e00);
+            --gradient-danger: linear-gradient(135deg, #ef476f, #d00000);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            padding: 25px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+            background: white;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 900;
+            margin: 0;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            margin: 8px 0 12px 0;
+            font-size: 0.9rem;
+        }
+
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            background: rgba(6, 214, 160, 0.1);
+            color: var(--success);
+        }
+
+        .trend-down {
+            background: rgba(239, 71, 111, 0.1);
+            color: var(--danger);
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chart-title i {
+            color: var(--primary);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .chart-container-large {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
+        .chart-container-small {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .lists-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 1200px) {
+            .lists-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .list-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .list-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .list-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .list-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .list-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .list-item:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .item-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .item-subtitle {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .item-date {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .badge-warning {
+            background: var(--gradient-warning);
+            color: white;
+        }
+
+        .badge-danger {
+            background: var(--gradient-danger);
+            color: white;
+        }
+
+        .badge-info {
+            background: linear-gradient(135deg, var(--info), var(--info-dark));
+            color: white;
+        }
+
+        .mini-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .mini-stat {
+            background: rgba(0, 0, 0, 0.03);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .mini-stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .mini-stat-label {
+            font-size: 0.75rem;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+    </style>
+
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
         navbar-main navbar-scroll="true">
         <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
             <nav>
-                <!-- breadcrumb -->
                 <ol class="flex flex-wrap pt-1 mr-12 bg-transparent rounded-lg sm:mr-16">
                     <li class="text-sm leading-normal">
                         <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
@@ -32,10 +334,6 @@
                     </div>
                 </div>
                 <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
-                    <!-- online builder btn  -->
-                    <!-- <li class="flex items-center">
-                        <a class="inline-block px-8 py-2 mb-0 mr-4 text-xs font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
-                      </li> -->
                     <li class="flex items-center">
                         <a href="./pages/sign-in.html"
                             class="block px-0 py-2 text-sm font-semibold transition-all ease-nav-brand text-slate-500">
@@ -58,160 +356,124 @@
                     <li class="flex items-center px-4">
                         <a href="javascript:;" class="p-0 text-sm transition-all ease-nav-brand text-slate-500">
                             <i fixed-plugin-button-nav class="cursor-pointer fa fa-cog"></i>
-                            <!-- fixed-plugin-button-nav  -->
                         </a>
                     </li>
-
-
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- end Navbar -->
-
     <!-- cards -->
     <div class="w-full px-6 py-6 mx-auto">
-        <!-- row 1 -->
-        <div class="flex flex-wrap -mx-3">
-            <!-- card1 -->
-            <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3">
-                            <div class="flex-none w-2/3 max-w-full px-3">
-                                <div>
-                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">
-                                        Today's Money
-                                    </p>
-                                    <h5 class="mb-0 font-bold">
-                                        $53,000
-                                        <span class="text-sm leading-normal font-weight-bolder text-lime-500">+55%</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none ni-money-coins text-lg relative top-3.5 text-white"></i>
-                                </div>
-                            </div>
-                        </div>
+        <!-- row 1 - Cartes statistiques -->
+        <div class="stats-grid">
+            <!-- Chiffre d'affaires -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-1);">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ number_format($statistiques['total_ca'], 0, ',', ' ') }} FCFA</h3>
+                    <p class="stat-label">Chiffre d'affaires total</p>
+                    <div class="stat-trend {{ $statistiques['pourcentage_ca'] >= 0 ? 'trend-up' : 'trend-down' }}">
+                        <i class="fas fa-arrow-{{ $statistiques['pourcentage_ca'] >= 0 ? 'up' : 'down' }}"></i>
+                        {{ abs($statistiques['pourcentage_ca']) }}% aujourd'hui
                     </div>
                 </div>
             </div>
 
-            <!-- card2 -->
-            <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3">
-                            <div class="flex-none w-2/3 max-w-full px-3">
-                                <div>
-                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">
-                                        Today's Users
-                                    </p>
-                                    <h5 class="mb-0 font-bold">
-                                        2,300
-                                        <span class="text-sm leading-normal font-weight-bolder text-lime-500">+3%</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none ni-world text-lg relative top-3.5 text-white"></i>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Ventes -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-2);">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ $statistiques['total_ventes'] }}</h3>
+                    <p class="stat-label">Ventes totales</p>
+                    <div class="d-flex align-items-center">
+                        <span class="text-success me-2">
+                            <i class="fas fa-check-circle"></i> {{ $statistiques['ventes_aujourdhui'] }} aujourd'hui
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <!-- card3 -->
-            <div class="w-full max-w-full px-3 mb-6 sm:w-1/2 sm:flex-none xl:mb-0 xl:w-1/4">
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3">
-                            <div class="flex-none w-2/3 max-w-full px-3">
-                                <div>
-                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">
-                                        New Clients
-                                    </p>
-                                    <h5 class="mb-0 font-bold">
-                                        +3,462
-                                        <span class="text-sm leading-normal text-red-600 font-weight-bolder">-2%</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none ni-paper-diploma text-lg relative top-3.5 text-white"></i>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Clients -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-3);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ $statistiques['total_clients'] }}</h3>
+                    <p class="stat-label">Clients enregistrés</p>
+                    <div class="text-success">
+                        <i class="fas fa-user-plus"></i> {{ $statistiques['nouveaux_clients'] }} nouveaux aujourd'hui
                     </div>
                 </div>
             </div>
 
-            <!-- card4 -->
-            <div class="w-full max-w-full px-3 sm:w-1/2 sm:flex-none xl:w-1/4">
-                <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3">
-                            <div class="flex-none w-2/3 max-w-full px-3">
-                                <div>
-                                    <p class="mb-0 font-sans text-sm font-semibold leading-normal">
-                                        Sales
-                                    </p>
-                                    <h5 class="mb-0 font-bold">
-                                        $103,430
-                                        <span class="text-sm leading-normal font-weight-bolder text-lime-500">+5%</span>
-                                    </h5>
-                                </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none ni-cart text-lg relative top-3.5 text-white"></i>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Stock -->
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--gradient-4);">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 class="stat-value">{{ $statistiques['total_produits'] }}</h3>
+                    <p class="stat-label">Produits en stock</p>
+                    <div class="d-flex gap-2">
+                        <span class="badge badge-danger">{{ $statistiques['produits_rupture'] }} rupture</span>
+                        <span class="badge badge-warning">{{ $statistiques['produits_faible'] }} faible</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- cards row 2 -->
+        <!-- cards row 2 - Graphiques -->
         <div class="flex flex-wrap mt-6 -mx-3">
+            <!-- Left side - Grand graphique -->
             <div class="w-full px-3 mb-6 lg:mb-0 lg:w-7/12 lg:flex-none">
                 <div class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
                     <div class="flex-auto p-4">
                         <div class="flex flex-wrap -mx-3">
-                            <div class="max-w-full px-3 lg:w-1/2 lg:flex-none">
-                                <div class="flex flex-col h-full">
-                                    <p class="pt-2 mb-1 font-semibold">Built by developers</p>
-                                    <h5 class="font-bold">Soft UI Dashboard</h5>
-                                    <p class="mb-12">
-                                        From colors, cards, typography to complex elements, you
-                                        will find the full documentation.
+                            <div class="max-w-full px-3 lg:w-1/2 lg:flex-none"
+                                style="
+        background-image: url('{{ asset('images/11.webp') }}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: 12px;
+     ">
+                                <div class="flex flex-col h-full p-6"
+                                    style="
+            background-color: rgba(0, 0, 0, 0.55);
+            border-radius: 12px;
+            color: #ffffff;
+         ">
+
+                                    <p class="pt-2 mb-1 font-semibold">
+                                        Activité du mois
                                     </p>
-                                    <a class="mt-auto mb-0 text-sm font-semibold leading-normal group text-slate-500"
-                                        href="javascript:;">
-                                        Read More
-                                        <i
-                                            class="fas fa-arrow-right ease-bounce text-sm group-hover:translate-x-1.25 ml-1 leading-normal transition-all duration-200"></i>
-                                    </a>
+
+                                    <h5 class="font-bold text-lg">
+                                        Performance des ventes
+                                    </h5>
+
+                                    <p class="mb-12 text-sm">
+                                        Analyse détaillée de votre chiffre d'affaires et tendances des ventes.
+                                    </p>
+
+                                    <div class="mt-auto">
+                                        <span class="text-sm text-slate-300">
+                                            Mis à jour : {{ now()->format('d/m/Y') }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="max-w-full px-3 mt-12 ml-auto text-center lg:mt-0 lg:w-5/12 lg:flex-none">
-                                <div class="h-full bg-gradient-to-tl from-purple-700 to-pink-500 rounded-xl">
-                                    <img src="./assets/img/shapes/waves-white.svg"
-                                        class="absolute top-0 hidden w-1/2 h-full lg:block" alt="waves" />
-                                    <div class="relative flex items-center justify-center h-full">
-                                        <img class="relative z-20 w-full pt-6"
-                                            src="./assets/img/illustrations/rocket-white.png" alt="rocket" />
+                                <div class="h-full rounded-xl">
+                                    <div class="chart-container-large">
+                                        <canvas id="caMensuelChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -219,48 +481,47 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Right side - Diagramme circulaire statut stocks -->
             <div class="w-full max-w-full px-3 lg:w-5/12 lg:flex-none">
                 <div
                     class="border-black/12.5 shadow-soft-xl relative flex h-full min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border p-4">
                     <div class="relative h-full overflow-hidden bg-cover rounded-xl"
-                        style="background-image: url('./assets/img/ivancik.jpg')">
-                        <span
-                            class="absolute top-0 left-0 w-full h-full bg-center bg-cover bg-gradient-to-tl from-gray-900 to-slate-800 opacity-80"></span>
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
                         <div class="relative z-10 flex flex-col flex-auto h-full p-4">
-                            <h5 class="pt-2 mb-6 font-bold text-white">
-                                Work with the rockets
+                            <h5 class="pt-2 mb-4 font-bold text-white">
+                                Statut des stocks
                             </h5>
-                            <p class="text-white">
-                                Wealth creation is an evolutionarily recent positive-sum
-                                game. It is all about who take the opportunity first.
+                            <p class="text-white mb-4">
+                                Répartition des produits par niveau de stock
                             </p>
-                            <a class="mt-auto mb-0 text-sm font-semibold leading-normal text-white group"
-                                href="javascript:;">
-                                Read More
-                                <i
-                                    class="fas fa-arrow-right ease-bounce text-sm group-hover:translate-x-1.25 ml-1 leading-normal transition-all duration-200"></i>
-                            </a>
+
+                            <div class="chart-container-small">
+                                <canvas id="statutStocksChart"></canvas>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- cards row 3 -->
-
+        <!-- cards row 3 - Graphiques supplémentaires -->
         <div class="flex flex-wrap mt-6 -mx-3">
+            <!-- Graphique Ventes quotidiennes -->
             <div class="w-full max-w-full px-3 mt-0 mb-6 lg:mb-0 lg:w-5/12 lg:flex-none">
                 <div
                     class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
                     <div class="flex-auto p-4">
                         <div class="py-4 pr-1 mb-4 bg-gradient-to-tl from-gray-900 to-slate-800 rounded-xl">
                             <div>
-                                <canvas id="chart-bars" height="170"></canvas>
+                                <canvas id="ventesJourChart" height="170"></canvas>
                             </div>
                         </div>
-                        <h6 class="mt-6 mb-0 ml-2">Active Users</h6>
+                        <h6 class="mt-6 mb-0 ml-2">Ventes quotidiennes (7 derniers jours)</h6>
                         <p class="ml-2 text-sm leading-normal">
-                            (<span class="font-bold">+23%</span>) than last week
+                            Aujourd'hui ({{ now()->format('d/m') }}): <span
+                                class="font-bold">{{ $statistiques['ventes_aujourdhui'] }} ventes</span>
                         </p>
                         <div class="w-full px-6 mx-auto max-w-screen-2xl rounded-xl">
                             <div class="flex flex-wrap mt-0 -mx-3">
@@ -268,153 +529,97 @@
                                     <div class="flex mb-2">
                                         <div
                                             class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-purple-700 to-pink-500 text-neutral-900">
-                                            <svg width="10px" height="10px" viewBox="0 0 40 44" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <title>document</title>
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <g transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF"
-                                                        fill-rule="nonzero">
-                                                        <g transform="translate(1716.000000, 291.000000)">
-                                                            <g transform="translate(154.000000, 300.000000)">
-                                                                <path class="color-background"
-                                                                    d="M40,40 L36.3636364,40 L36.3636364,3.63636364 L5.45454545,3.63636364 L5.45454545,0 L38.1818182,0 C39.1854545,0 40,0.814545455 40,1.81818182 L40,40 Z"
-                                                                    opacity="0.603585379"></path>
-                                                                <path class="color-background"
-                                                                    d="M30.9090909,7.27272727 L1.81818182,7.27272727 C0.814545455,7.27272727 0,8.08727273 0,9.09090909 L0,41.8181818 C0,42.8218182 0.814545455,43.6363636 1.81818182,43.6363636 L30.9090909,43.6363636 C31.9127273,43.6363636 32.7272727,42.8218182 32.7272727,41.8181818 L32.7272727,9.09090909 C32.7272727,8.08727273 31.9127273,7.27272727 30.9090909,7.27272727 Z M18.1818182,34.5454545 L7.27272727,34.5454545 L7.27272727,30.9090909 L18.1818182,30.9090909 L18.1818182,34.5454545 Z M25.4545455,27.2727273 L7.27272727,27.2727273 L7.27272727,23.6363636 L25.4545455,23.6363636 L25.4545455,27.2727273 Z M25.4545455,20 L7.27272727,20 L7.27272727,16.3636364 L25.4545455,16.3636364 L25.4545455,20 Z">
-                                                                </path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
+                                            <i class="fas fa-shopping-cart text-xs text-white"></i>
                                         </div>
                                         <p class="mt-1 mb-0 text-xs font-semibold leading-tight">
-                                            Users
+                                            Ventes
                                         </p>
                                     </div>
-                                    <h4 class="font-bold">36K</h4>
+                                    <h4 class="font-bold">{{ $statistiques['total_ventes'] }}</h4>
                                     <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
-                                        <div class="duration-600 ease-soft -mt-0.38 -ml-px flex h-1.5 w-3/5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
-                                            role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                                        @php
+                                            $progress =
+                                                $statistiques['total_ventes'] > 0
+                                                    ? min(100, ($statistiques['total_ventes'] / 100) * 100)
+                                                    : 0;
+                                        @endphp
+                                        <div class="duration-600 ease-soft -mt-0.38 -ml-px flex h-1.5 w-{{ min(100, $progress) }}/100 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
+                                            role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="flex-none w-1/4 max-w-full py-4 pl-0 pr-3 mt-0">
                                     <div class="flex mb-2">
                                         <div
                                             class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-blue-600 to-cyan-400 text-neutral-900">
-                                            <svg width="10px" height="10px" viewBox="0 0 40 40" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <title>spaceship</title>
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <g transform="translate(-1720.000000, -592.000000)" fill="#FFFFFF"
-                                                        fill-rule="nonzero">
-                                                        <g transform="translate(1716.000000, 291.000000)">
-                                                            <g transform="translate(4.000000, 301.000000)">
-                                                                <path class="color-background"
-                                                                    d="M39.3,0.706666667 C38.9660984,0.370464027 38.5048767,0.192278529 38.0316667,0.216666667 C14.6516667,1.43666667 6.015,22.2633333 5.93166667,22.4733333 C5.68236407,23.0926189 5.82664679,23.8009159 6.29833333,24.2733333 L15.7266667,33.7016667 C16.2013871,34.1756798 16.9140329,34.3188658 17.535,34.065 C17.7433333,33.98 38.4583333,25.2466667 39.7816667,1.97666667 C39.8087196,1.50414529 39.6335979,1.04240574 39.3,0.706666667 Z M25.69,19.0233333 C24.7367525,19.9768687 23.3029475,20.2622391 22.0572426,19.7463614 C20.8115377,19.2304837 19.9992882,18.0149658 19.9992882,16.6666667 C19.9992882,15.3183676 20.8115377,14.1028496 22.0572426,13.5869719 C23.3029475,13.0710943 24.7367525,13.3564646 25.69,14.31 C26.9912731,15.6116662 26.9912731,17.7216672 25.69,19.0233333 L25.69,19.0233333 Z">
-                                                                </path>
-                                                                <path class="color-background"
-                                                                    d="M1.855,31.4066667 C3.05106558,30.2024182 4.79973884,29.7296005 6.43969145,30.1670277 C8.07964407,30.6044549 9.36054508,31.8853559 9.7979723,33.5253085 C10.2353995,35.1652612 9.76258177,36.9139344 8.55833333,38.11 C6.70666667,39.9616667 0,40 0,40 C0,40 0,33.2566667 1.855,31.4066667 Z">
-                                                                </path>
-                                                                <path class="color-background"
-                                                                    d="M17.2616667,3.90166667 C12.4943643,3.07192755 7.62174065,4.61673894 4.20333333,8.04166667 C3.31200265,8.94126033 2.53706177,9.94913142 1.89666667,11.0416667 C1.5109569,11.6966059 1.61721591,12.5295394 2.155,13.0666667 L5.47,16.3833333 C8.55036617,11.4946947 12.5559074,7.25476565 17.2616667,3.90166667 L17.2616667,3.90166667 Z"
-                                                                    opacity="0.598539807"></path>
-                                                                <path class="color-background"
-                                                                    d="M36.0983333,22.7383333 C36.9280725,27.5056357 35.3832611,32.3782594 31.9583333,35.7966667 C31.0587397,36.6879974 30.0508686,37.4629382 28.9583333,38.1033333 C28.3033941,38.4890431 27.4704606,38.3827841 26.9333333,37.845 L23.6166667,34.53 C28.5053053,31.4496338 32.7452344,27.4440926 36.0983333,22.7383333 L36.0983333,22.7383333 Z"
-                                                                    opacity="0.598539807"></path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
+                                            <i class="fas fa-users text-xs text-white"></i>
                                         </div>
                                         <p class="mt-1 mb-0 text-xs font-semibold leading-tight">
-                                            Clicks
+                                            Clients
                                         </p>
                                     </div>
-                                    <h4 class="font-bold">2m</h4>
+                                    <h4 class="font-bold">{{ $statistiques['total_clients'] }}</h4>
                                     <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
-                                        <div class="duration-600 ease-soft -mt-0.38 w-9/10 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
-                                            role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                                        @php
+                                            $progress =
+                                                $statistiques['total_clients'] > 0
+                                                    ? min(100, ($statistiques['total_clients'] / 50) * 100)
+                                                    : 0;
+                                        @endphp
+                                        <div class="duration-600 ease-soft -mt-0.38 w-{{ min(100, $progress) }}/100 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
+                                            role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="flex-none w-1/4 max-w-full py-4 pl-0 pr-3 mt-0">
                                     <div class="flex mb-2">
                                         <div
                                             class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-500 to-yellow-400 text-neutral-900">
-                                            <svg width="10px" height="10px" viewBox="0 0 43 36" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <title>credit-card</title>
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <g transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF"
-                                                        fill-rule="nonzero">
-                                                        <g transform="translate(1716.000000, 291.000000)">
-                                                            <g transform="translate(453.000000, 454.000000)">
-                                                                <path class="color-background"
-                                                                    d="M43,10.7482083 L43,3.58333333 C43,1.60354167 41.3964583,0 39.4166667,0 L3.58333333,0 C1.60354167,0 0,1.60354167 0,3.58333333 L0,10.7482083 L43,10.7482083 Z"
-                                                                    opacity="0.593633743"></path>
-                                                                <path class="color-background"
-                                                                    d="M0,16.125 L0,32.25 C0,34.2297917 1.60354167,35.8333333 3.58333333,35.8333333 L39.4166667,35.8333333 C41.3964583,35.8333333 43,34.2297917 43,32.25 L43,16.125 L0,16.125 Z M19.7083333,26.875 L7.16666667,26.875 L7.16666667,23.2916667 L19.7083333,23.2916667 L19.7083333,26.875 Z M35.8333333,26.875 L28.6666667,26.875 L28.6666667,23.2916667 L35.8333333,23.2916667 L35.8333333,26.875 Z">
-                                                                </path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
+                                            <i class="fas fa-box text-xs text-white"></i>
                                         </div>
                                         <p class="mt-1 mb-0 text-xs font-semibold leading-tight">
-                                            Sales
+                                            Produits
                                         </p>
                                     </div>
-                                    <h4 class="font-bold">435$</h4>
+                                    <h4 class="font-bold">{{ $statistiques['total_produits'] }}</h4>
                                     <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
-                                        <div class="duration-600 ease-soft -mt-0.38 w-3/10 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
-                                            role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                                        @php
+                                            $progress =
+                                                $statistiques['total_produits'] > 0
+                                                    ? min(100, ($statistiques['total_produits'] / 50) * 100)
+                                                    : 0;
+                                        @endphp
+                                        <div class="duration-600 ease-soft -mt-0.38 w-{{ min(100, $progress) }}/100 -ml-px flex h-1.5 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
+                                            role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="flex-none w-1/4 max-w-full py-4 pl-0 pr-3 mt-0">
                                     <div class="flex mb-2">
                                         <div
                                             class="flex items-center justify-center w-5 h-5 mr-2 text-center bg-center rounded fill-current shadow-soft-2xl bg-gradient-to-tl from-red-600 to-rose-400 text-neutral-900">
-                                            <svg width="10px" height="10px" viewBox="0 0 40 40" version="1.1"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink">
-                                                <title>settings</title>
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF"
-                                                        fill-rule="nonzero">
-                                                        <g transform="translate(1716.000000, 291.000000)">
-                                                            <g transform="translate(304.000000, 151.000000)">
-                                                                <polygon class="color-background" opacity="0.596981957"
-                                                                    points="18.0883333 15.7316667 11.1783333 8.82166667 13.3333333 6.66666667 6.66666667 0 0 6.66666667 6.66666667 13.3333333 8.82166667 11.1783333 15.315 17.6716667">
-                                                                </polygon>
-                                                                <path class="color-background"
-                                                                    d="M31.5666667,23.2333333 C31.0516667,23.2933333 30.53,23.3333333 30,23.3333333 C29.4916667,23.3333333 28.9866667,23.3033333 28.48,23.245 L22.4116667,30.7433333 L29.9416667,38.2733333 C32.2433333,40.575 35.9733333,40.575 38.275,38.2733333 L38.275,38.2733333 C40.5766667,35.9716667 40.5766667,32.2416667 38.275,29.94 L31.5666667,23.2333333 Z"
-                                                                    opacity="0.596981957"></path>
-                                                                <path class="color-background"
-                                                                    d="M33.785,11.285 L28.715,6.215 L34.0616667,0.868333333 C32.82,0.315 31.4483333,0 30,0 C24.4766667,0 20,4.47666667 20,10 C20,10.99 20.1483333,11.9433333 20.4166667,12.8466667 L2.435,27.3966667 C0.95,28.7083333 0.0633333333,30.595 0.00333333333,32.5733333 C-0.0583333333,34.5533333 0.71,36.4916667 2.11,37.89 C3.47,39.2516667 5.27833333,40 7.20166667,40 C9.26666667,40 11.2366667,39.1133333 12.6033333,37.565 L27.1533333,19.5833333 C28.0566667,19.8516667 29.01,20 30,20 C35.5233333,20 40,15.5233333 40,10 C40,8.55166667 39.685,7.18 39.1316667,5.93666667 L33.785,11.285 Z">
-                                                                </path>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </svg>
+                                            <i class="fas fa-exclamation-triangle text-xs text-white"></i>
                                         </div>
                                         <p class="mt-1 mb-0 text-xs font-semibold leading-tight">
-                                            Items
+                                            Rupture
                                         </p>
                                     </div>
-                                    <h4 class="font-bold">43</h4>
+                                    <h4 class="font-bold">{{ $statistiques['produits_rupture'] }}</h4>
                                     <div class="text-xs h-0.75 flex w-3/4 overflow-visible rounded-lg bg-gray-200">
-                                        <div class="duration-600 ease-soft -mt-0.38 -ml-px flex h-1.5 w-1/2 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
-                                            role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
+                                        @php
+                                            $progress =
+                                                $statistiques['produits_rupture'] > 0
+                                                    ? min(
+                                                        100,
+                                                        ($statistiques['produits_rupture'] /
+                                                            $statistiques['total_produits']) *
+                                                            100,
+                                                    )
+                                                    : 0;
+                                        @endphp
+                                        <div class="duration-600 ease-soft -mt-0.38 -ml-px flex h-1.5 w-{{ min(100, $progress) }}/100 flex-col justify-center overflow-hidden whitespace-nowrap rounded-lg bg-slate-700 text-center text-white transition-all"
+                                            role="progressbar" aria-valuenow="{{ $progress }}" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
                                     </div>
                                 </div>
                             </div>
@@ -422,24 +627,429 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Graphique Top produits -->
             <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none">
                 <div
                     class="border-black/12.5 shadow-soft-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
                     <div class="border-black/12.5 mb-0 rounded-t-2xl border-b-0 border-solid bg-white p-6 pb-0">
-                        <h6>Sales overview</h6>
+                        <h6>Top 5 produits les plus vendus</h6>
                         <p class="text-sm leading-normal">
-                            <i class="fa fa-arrow-up text-lime-500"></i>
-                            <span class="font-semibold">4% more</span> in 2021
+                            <i class="fa fa-star text-warning"></i>
+                            Produits avec les meilleures ventes
                         </p>
                     </div>
                     <div class="flex-auto p-4">
                         <div>
-                            <canvas id="chart-line" height="300"></canvas>
+                            <canvas id="topProduitsChart" height="300"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- cards row 4 -->
-    @endsection
+        <!-- Listes (cartes row 4) -->
+        <div class="lists-grid">
+            <!-- Dernières ventes -->
+            <div class="list-card">
+                <div class="list-header">
+                    <h3 class="list-title">
+                        <i class="fas fa-history"></i> Dernières Ventes
+                    </h3>
+                </div>
+                <div class="list-body">
+                    @forelse($dernieresVentes as $vente)
+                        <div class="list-item"
+                            style="
+        background-image: url('{{ asset('images/10.webp') }}');
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+     ">
+                            <div class="item-content"
+                                style="
+            background: rgba(255,255,255,0.88);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+         ">
+
+                                <div>
+                                    <div class="item-title" style="font-weight: 600; font-size: 15px;">
+                                        {{ $vente->numero_vente }}
+                                    </div>
+
+                                    <div class="item-subtitle" style="font-size: 13px; color: #6c757d;">
+                                        @if ($vente->client)
+                                            {{ $vente->client->nom }} {{ $vente->client->prenom }}
+                                        @else
+                                            Client non enregistré
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="item-meta" style="text-align: right;">
+                                    <span class="text-success fw-bold" style="display:block; font-size:15px;">
+                                        {{ number_format($vente->montant_total, 0, ',', ' ') }} FCFA
+                                    </span>
+                                    <span class="item-date" style="font-size:12px; color:#6c757d;">
+                                        {{ $vente->created_at->format('d/m H:i') }}
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    @empty
+                        <div class="text-center py-4">
+                            <i class="fas fa-shopping-cart text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-gray-500">Aucune vente récente</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Produits récents -->
+            <div class="list-card">
+                <div class="list-header">
+                    <h3 class="list-title">
+                        <i class="fas fa-box-open"></i> Nouveaux Produits
+                    </h3>
+                </div>
+                <div class="list-body"
+                    style="
+        background-image: url('{{ asset('images/12.webp') }}');
+        background-size: cover;
+        background-position: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
+     ">
+                    @forelse($produitsRecents as $produit)
+                        <div class="list-item">
+                            <div class="item-content">
+                                <div class="item-title" style="color: #fff; font-size: 1.1rem; font-weight: 700;">
+                                    <strong>{{ $produit->nom }}</strong>
+                                </div>
+
+                                <div class="item-subtitle" style="color: #f12828; font-size: 0.9rem;">
+                                    <strong>Ref :</strong> {{ $produit->reference }}
+                                </div>
+
+                                <div class="item-meta">
+                                    <span class="fw-bold" style="color: #fff; font-size: 1rem;">
+                                        <strong>{{ number_format($produit->prix_vente, 0, ',', ' ') }} FCFA</strong>
+                                    </span>
+
+                                    <span
+                                        class="badge badge-{{ $produit->stock_status == 'normal' ? 'success' : ($produit->stock_status == 'faible' ? 'warning' : ($produit->stock_status == 'rupture' ? 'danger' : 'info')) }}"
+                                        style="font-size: 0.75rem;">
+                                        {{ ucfirst($produit->stock_status) }}
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                    @empty
+                        <div class="text-center py-4">
+                            <i class="fas fa-box text-gray-400 text-2xl mb-2"></i>
+                            <p class="text-gray-500">Aucun produit récent</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Produits en rupture -->
+            <div class="list-card">
+                <div class="list-header">
+                    <h3 class="list-title text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> Produits en Rupture
+                    </h3>
+                </div>
+                <div class="list-body">
+                    @forelse($produitsRuptureListe as $produit)
+                        <div class="list-item">
+                            <div class="item-content">
+                                <div class="item-title">{{ $produit->nom }}</div>
+                                <div class="item-subtitle"
+                                    style=" display: inline-block;
+    padding: 4px 10px;
+    background-color: #5435dc;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.5);">
+                                    Seuil: {{ $produit->seuil_alerte }}</div>
+                                <div class="item-meta">
+                                    <span class="stock-epuise"
+                                        style=" display: inline-block;
+    padding: 4px 10px;
+    background-color: #dc3545; /* rouge */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(220, 53, 69, 0.5);
+">STOCK
+                                        ÉPUISÉ</span>
+                                    <span class="item-date">
+                                        {{ $produit->updated_at->format('d/m') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-4">
+                            <i class="fas fa-check-circle text-success text-2xl mb-2"></i>
+                            <p class="text-success">Aucun produit en rupture</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Dashboard loaded, initializing charts...');
+
+            const colors = {
+                primary: '#4361ee',
+                secondary: '#7209b7',
+                success: '#06d6a0',
+                danger: '#ef476f',
+                warning: '#ffd166',
+                info: '#4cc9f0',
+                gray: '#6c757d'
+            };
+
+            const chartData = @json($chartData);
+            console.log('Chart data:', chartData);
+
+            // 1. Graphique CA Mensuel
+            const caMensuelChart = document.getElementById('caMensuelChart');
+            if (caMensuelChart) {
+                console.log('Creating CA mensuel chart');
+                try {
+                    new Chart(caMensuelChart, {
+                        type: 'bar',
+                        data: {
+                            labels: chartData.ca_labels,
+                            datasets: [{
+                                label: 'Chiffre d\'affaires (FCFA)',
+                                data: chartData.ca_data,
+                                backgroundColor: colors.primary + '80',
+                                borderColor: colors.primary,
+                                borderWidth: 2,
+                                borderRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return new Intl.NumberFormat('fr-FR').format(value) +
+                                                ' FCFA';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error creating CA chart:', error);
+                }
+            }
+
+            // 2. Graphique Ventes par Jour
+            const ventesJourChart = document.getElementById('ventesJourChart');
+            if (ventesJourChart) {
+                console.log('Creating ventes par jour chart');
+                try {
+                    new Chart(ventesJourChart, {
+                        type: 'bar',
+                        data: {
+                            labels: chartData.ventes_labels,
+                            datasets: [{
+                                label: 'Nombre de ventes',
+                                data: chartData.ventes_data,
+                                backgroundColor: colors.secondary + '80',
+                                borderColor: colors.secondary,
+                                borderWidth: 1,
+                                borderRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error creating ventes jour chart:', error);
+                }
+            }
+
+            // 3. Graphique Top Produits
+            const topProduitsChart = document.getElementById('topProduitsChart');
+            if (topProduitsChart) {
+                console.log('Creating top produits chart');
+                try {
+                    new Chart(topProduitsChart, {
+                        type: 'bar',
+                        data: {
+                            labels: chartData.top_produits_labels,
+                            datasets: [{
+                                label: 'Quantités vendues',
+                                data: chartData.top_produits_data,
+                                backgroundColor: [
+                                    colors.primary,
+                                    colors.secondary,
+                                    colors.success,
+                                    colors.warning,
+                                    colors.info
+                                ],
+                                borderWidth: 0,
+                                borderRadius: 8
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error creating top produits chart:', error);
+                }
+            }
+
+            // 4. Graphique Statut des Stocks
+            const statutStocksChart = document.getElementById('statutStocksChart');
+            if (statutStocksChart) {
+                console.log('Creating statut stocks chart');
+                try {
+                    // Traduire les labels
+                    const labelsTraduits = chartData.statut_stocks_labels.map(label => {
+                        const traductions = {
+                            'normal': 'Normal',
+                            'faible': 'Faible',
+                            'rupture': 'Rupture',
+                            'alerte': 'Alerte'
+                        };
+                        return traductions[label] || label;
+                    });
+
+                    // Couleurs pour chaque statut
+                    const backgroundColors = chartData.statut_stocks_labels.map(label => {
+                        const couleurs = {
+                            'normal': colors.success,
+                            'faible': colors.warning,
+                            'rupture': colors.danger,
+                            'alerte': colors.info
+                        };
+                        return couleurs[label] || colors.gray;
+                    });
+
+                    new Chart(statutStocksChart, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labelsTraduits,
+                            datasets: [{
+                                data: chartData.statut_stocks_data,
+                                backgroundColor: backgroundColors,
+                                borderWidth: 2,
+                                borderColor: 'white'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 20,
+                                        usePointStyle: true,
+                                        color: 'white'
+                                    }
+                                }
+                            },
+                            cutout: '70%'
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error creating statut stocks chart:', error);
+                }
+            }
+
+            // Animation des valeurs statistiques
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const text = stat.textContent;
+                const match = text.match(/([\d\s]+)/);
+                if (match) {
+                    const finalValue = parseInt(match[1].replace(/\s/g, ''));
+                    if (!isNaN(finalValue) && finalValue > 0) {
+                        let current = 0;
+                        const increment = finalValue / 30;
+                        const timer = setInterval(() => {
+                            current += increment;
+                            if (current >= finalValue) {
+                                current = finalValue;
+                                clearInterval(timer);
+                            }
+                            const formatted = new Intl.NumberFormat('fr-FR').format(Math.floor(
+                                current));
+                            stat.textContent = text.replace(match[1], formatted);
+                        }, 50);
+                    }
+                }
+            });
+
+            console.log('All charts initialized');
+        });
+    </script>
+@endsection

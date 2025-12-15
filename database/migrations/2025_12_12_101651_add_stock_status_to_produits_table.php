@@ -10,7 +10,7 @@ class AddStockStatusToProduitsTable extends Migration
     public function up()
     {
         Schema::table('produits', function (Blueprint $table) {
-            $table->enum('stock_status', ['normal', 'faible', 'rupture'])
+            $table->enum('stock_status', ['normal', 'faible', 'rupture', 'alerte'])
                   ->default('normal')
                   ->after('seuil_alerte');
         });

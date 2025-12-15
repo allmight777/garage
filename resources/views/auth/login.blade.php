@@ -1,4 +1,5 @@
 <html>
+     <link rel="shortcut icon" href="{{ asset('images/logo.webp') }}" type="image/x-icon">
 <style>
 
     html, body {

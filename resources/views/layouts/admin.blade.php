@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Soft UI Dashboard Tailwind - v1.0.5
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-tailwind
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html>
 
@@ -151,26 +137,28 @@
                 </li>
 
 
-                        <li class="mt-0.5 w-full">
-                    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-                        href="">
-                        <div
-                            class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-                            <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M3 7L3 17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7Z"
-                                    stroke="#1e40af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M7 3V7" stroke="#1e40af" stroke-width="2" stroke-linecap="round" />
-                                <path d="M17 3V7" stroke="#1e40af" stroke-width="2" stroke-linecap="round" />
-                                <circle cx="12" cy="13" r="3" stroke="#1e40af" stroke-width="2" />
-                            </svg>
-                        </div>
-                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft" style="color: white;">
-                            Gestion des stocks
-                        </span>
-                    </a>
-                </li>
+         <li class="mt-0.5 w-full">
+    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+        href="{{ route('ventes.create') }}">
+        <div
+            class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="16"
+                height="16" viewBox="0 0 24 24" stroke-width="2" stroke="#1e40af" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <circle cx="6" cy="19" r="2" />
+                <circle cx="17" cy="19" r="2" />
+                <path d="M17 17H6V6H3" />
+                <path d="M6 6L7 3H19L21 7H8" />
+            </svg>
+        </div>
+        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+            style="color: white;">
+            Gestion des ventes
+        </span>
+    </a>
+</li>
+
 
 
             </ul>
