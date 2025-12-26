@@ -1284,10 +1284,6 @@
 
 
 
-
-
-
-
         <!-- Products Section -->
         <section class="products" id="products-section">
             <div class="section-title" id="products-title">
@@ -1297,7 +1293,7 @@
 
             <div class="products-grid" id="products-grid-container">
                 @foreach ($produits as $index => $produit)
-                    <div class="product-card {{ $index >= 6 ? 'extra-product' : '' }}"
+                    <div class="product-card {{ $index >= 8 ? 'extra-product' : '' }}"
                         id="product-card-{{ $produit->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                         <div class="product-badge" id="badge-container-{{ $produit->id }}">
 
@@ -1402,13 +1398,15 @@
                 @endforeach
             </div>
 
-            @if ($produits->count() > 6)
-                <div class="products-action" id="products-action-container" data-aos="fade-up">
-                    <button class="btn btn-more" id="show-more-products-btn">
-                        <i class="fas fa-chevron-down"></i>
-                        <span>Voir plus de produits</span>
-                    </button>
-                </div>
+            @if ($produits->count() > 8)
+                <center>
+                    <div class="products-action" data-aos="fade-up">
+                        <a href="{{ route('products.all') }}"> <button class="btn btn-more" id="show-more-products-btn">
+                                <i class="fas fa-chevron-down"></i>
+                                <span>Voir plus de produits</span>
+                            </button> </a>
+                    </div>
+                </center>
             @endif
         </section>
 
@@ -1700,9 +1698,8 @@
             }
 
             #show-more-products-btn {
-                background: transparent;
-                border: 2px solid #3498db;
-                color: #3498db;
+                background: red;
+                color: #ffffff;
                 padding: 0.8rem 2rem;
                 border-radius: 25px;
                 font-weight: 600;
@@ -2223,8 +2220,8 @@
                                 ${data.image ?
                                     `<img src="${data.image}" alt="${data.nom}" class="detail-image">` :
                                     `<div class="detail-image-placeholder">
-                                                        <i class="fas fa-box-open"></i>
-                                                    </div>`
+                                                                <i class="fas fa-box-open"></i>
+                                                            </div>`
                                 }
                             </div>
                             <div class="detail-info">
