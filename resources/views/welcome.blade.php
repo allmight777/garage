@@ -569,7 +569,102 @@
                 </div>
 
                 <!-- Ligne inférieure avec le carrousel de cartes -->
-                <div class="services-bottom-row">
+
+<style>
+.cards-carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.cards-wrapper {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    padding: 10px;
+}
+
+/* Carte */
+.service-card {
+    flex: 0 0 calc(33.333% - 11px);
+    max-width: calc(33.333% - 11px);
+    scroll-snap-align: center;
+}
+
+/* Boutons */
+.carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #e60000;
+    color: #fff;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.full-width-section {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* WRAPPER */
+.cards-wrapper {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* CARTES */
+.service-card {
+    box-sizing: border-box;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+
+    .cards-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+        gap: 0;
+    }
+
+    .service-card {
+        flex: 0 0 100vw;
+        max-width: 100vw;
+        margin: 0;
+        scroll-snap-align: center;
+    }
+}
+
+
+
+.prev-btn { left: 5px; }
+.next-btn { right: 5px; }
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    .service-card {
+        flex: 0 0 90%;
+        max-width: 90%;
+        margin: 0 auto;
+    }
+}
+</style>
+
+
+             <div class="services-bottom-row full-width-section">
                     <div class="service-wide-model-card">
                         <div class="cards-carousel-section">
                             <h3 class="carousel-title">NOS RÉFÉRENCES & RÉALISATIONS</h3>
@@ -1096,121 +1191,99 @@
                     );
                 }
 
-                function initCardsCarousel() {
-                    const cardsWrapper = document.getElementById('cards-wrapper');
-                    const indicators = document.getElementById('carousel-indicators');
-                    const prevBtn = document.querySelector('.prev-btn');
-                    const nextBtn = document.querySelector('.next-btn');
+         function initCardsCarousel() {
+    const cardsWrapper = document.getElementById('cards-wrapper');
+    const indicators = document.getElementById('carousel-indicators');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
 
-                    let currentPage = 0;
-                    const cardsPerPage = 3;
-                    const totalPages = Math.ceil(carouselCards.length / cardsPerPage);
+    let currentPage = 0;
 
-                    // Créer les cartes
-                    carouselCards.forEach((card, index) => {
-                        // Créer la carte
-                        const cardElement = document.createElement('div');
-                        cardElement.className = 'service-card';
-                        cardElement.setAttribute('data-id', card.id);
+    function getCardsPerPage() {
+        return window.innerWidth < 768 ? 1 : 3;
+    }
 
-                        cardElement.innerHTML = `
-                    <img src="${card.imageUrl}" alt="${card.title}" class="card-image">
-                    <div class="card-content">
-                        <h3 class="card-title" style="color: white;">${card.title}</h3>
-                        <p class="card-description">${card.description}</p>
-                        <div class="card-tags">
-                            ${card.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('')}
-                        </div>
-                        <button class="card-btn" data-id="${card.id}">
-                            <i class="fas fa-info-circle"></i> Voir les détails
-                        </button>
-                    </div>
-                `;
+    let cardsPerPage = getCardsPerPage();
+    let totalPages = Math.ceil(carouselCards.length / cardsPerPage);
 
-                        cardsWrapper.appendChild(cardElement);
+    // Créer les cartes
+    carouselCards.forEach((card) => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'service-card';
+        cardElement.dataset.id = card.id;
 
-                        // Ajouter l'événement click au bouton
-                        const button = cardElement.querySelector('.card-btn');
-                        button.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            const cardData = carouselCards.find(c => c.id === card.id);
-                            if (cardData) {
-                                openCardModal(cardData);
-                            }
-                        });
-                    });
+        cardElement.innerHTML = `
+            <img src="${card.imageUrl}" alt="${card.title}" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title" style="color:white;">${card.title}</h3>
+                <p class="card-description">${card.description}</p>
+                <div class="card-tags">
+                    ${card.tags.map(tag => `<span class="card-tag">${tag}</span>`).join('')}
+                </div>
+                <button class="card-btn">
+                    <i class="fas fa-info-circle"></i> Voir les détails
+                </button>
+            </div>
+        `;
 
-                    // Créer les indicateurs
-                    for (let i = 0; i < totalPages; i++) {
-                        const indicator = document.createElement('div');
-                        indicator.className = 'indicator';
-                        if (i === 0) indicator.classList.add('active');
-                        indicator.setAttribute('data-page', i);
-                        indicator.addEventListener('click', () => {
-                            goToPage(i);
-                        });
-                        indicators.appendChild(indicator);
-                    }
+        cardElement.querySelector('.card-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openCardModal(card);
+        });
 
-                    // Événements des boutons
-                    prevBtn.addEventListener('click', () => {
-                        goToPage(currentPage - 1);
-                    });
+        cardsWrapper.appendChild(cardElement);
+    });
 
-                    nextBtn.addEventListener('click', () => {
-                        goToPage(currentPage + 1);
-                    });
+    function buildIndicators() {
+        indicators.innerHTML = '';
+        totalPages = Math.ceil(carouselCards.length / cardsPerPage);
 
-                    // Fonctions
-                    function goToPage(page) {
-                        if (page < 0) {
-                            page = totalPages - 1;
-                        } else if (page >= totalPages) {
-                            page = 0;
-                        }
+        for (let i = 0; i < totalPages; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator';
+            if (i === currentPage) indicator.classList.add('active');
+            indicator.addEventListener('click', () => goToPage(i));
+            indicators.appendChild(indicator);
+        }
+    }
 
-                        currentPage = page;
-                        const scrollAmount = page * cardsWrapper.clientWidth;
-                        cardsWrapper.scrollTo({
-                            left: scrollAmount,
-                            behavior: 'smooth'
-                        });
+    function goToPage(page) {
+        if (page < 0) page = totalPages - 1;
+        if (page >= totalPages) page = 0;
 
-                        // Mettre à jour les indicateurs
-                        document.querySelectorAll('.indicator').forEach((indicator, i) => {
-                            if (i === page) {
-                                indicator.classList.add('active');
-                            } else {
-                                indicator.classList.remove('active');
-                            }
-                        });
-                    }
+        currentPage = page;
 
-                    // Défilement automatique
-                    let autoScrollInterval = setInterval(() => {
-                        goToPage(currentPage + 1);
-                    }, 5000);
+        const card = cardsWrapper.querySelector('.service-card');
+        const cardWidth = card.offsetWidth + 16;
 
-                    // Arrêter le défilement automatique au survol
-                    cardsWrapper.addEventListener('mouseenter', () => {
-                        clearInterval(autoScrollInterval);
-                    });
+        cardsWrapper.scrollTo({
+            left: page * cardWidth * cardsPerPage,
+            behavior: 'smooth'
+        });
 
-                    cardsWrapper.addEventListener('mouseleave', () => {
-                        autoScrollInterval = setInterval(() => {
-                            goToPage(currentPage + 1);
-                        }, 5000);
-                    });
+        document.querySelectorAll('.indicator').forEach((el, i) => {
+            el.classList.toggle('active', i === page);
+        });
+    }
 
-                    // Navigation au clavier
-                    document.addEventListener('keydown', (e) => {
-                        if (e.key === 'ArrowLeft') {
-                            goToPage(currentPage - 1);
-                        } else if (e.key === 'ArrowRight') {
-                            goToPage(currentPage + 1);
-                        }
-                    });
-                }
+    prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
+    nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+
+    let autoScroll = setInterval(() => goToPage(currentPage + 1), 5000);
+
+    cardsWrapper.addEventListener('mouseenter', () => clearInterval(autoScroll));
+    cardsWrapper.addEventListener('mouseleave', () => {
+        autoScroll = setInterval(() => goToPage(currentPage + 1), 5000);
+    });
+
+    window.addEventListener('resize', () => {
+        cardsPerPage = getCardsPerPage();
+        buildIndicators();
+        goToPage(0);
+    });
+
+    buildIndicators();
+}
 
                 function initCardModal() {
                     const modal = document.getElementById('card-modal');
@@ -2502,11 +2575,11 @@
                 </div>
 
                 <!-- Formulaire -->
-                <div
+        <div
                     style="background: #111; padding: 2rem; border-radius: 10px; box-shadow: 0 0 20px rgba(229,9,20,0.3);">
                     <h3 style="margin-bottom: 1.5rem; font-size: 1.5rem;">Demande de Rendez-vous</h3>
 
-                    <form id="contactForm" style="display: grid; gap: 1rem;">
+                 <center>  <form id="contactForm" style="display: grid; gap: 1rem;">
 
                         <input id="name" type="text" placeholder="Votre nom">
                         <input id="phone" type="tel" placeholder="Téléphone">
@@ -2524,7 +2597,7 @@
                             <i class="fas fa-paper-plane"></i> Envoyer la demande
                         </button>
 
-                    </form>
+                    </form> </center>
                 </div>
 
             </div>

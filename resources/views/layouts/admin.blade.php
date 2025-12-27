@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png" />
     <link rel="icon" type="image/png" href="./assets/img/favicon.png" />
-    <title>Soft UI Dashboard Tailwind</title>
+    <title>Admin Dashboard</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link rel="shortcut icon" href="{{ asset('images/logo.webp') }}" type="image/x-icon">
@@ -34,15 +34,48 @@
 
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <style>
+        /* Style pour le bouton hamburger */
+        .hamburger-btn {
+            display: none;
+        }
+
+        @media (max-width: 1280px) {
+            .hamburger-btn {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1000;
+                background: white;
+                border-radius: 8px;
+                padding: 10px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                cursor: pointer;
+            }
+
+            /* Lorsque le menu est ouvert, on le montre */
+            .sidenav-open {
+                transform: translateX(0) !important;
+            }
+        }
+    </style>
 </head>
 
 <body class="m-0 font-sans text-base antialiased font-normal leading-default bg-gray-50 text-slate-500">
+    <!-- Bouton hamburger pour mobile -->
+    <button id="hamburger-btn" class="hamburger-btn">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+
     <!-- sidenav  -->
-    <aside style="background-color: rgb(11, 158, 243); margin-right:0px;"
+    <aside id="sidebar" style="background-color: rgb(11, 158, 243); margin-right:0px;"
         class="max-w-62.5 ease-nav-brand z-990 fixed inset-y-0 my-4 ml-4 block w-full -translate-x-full flex-wrap items-center justify-between overflow-y-auto rounded-2xl border-0 bg-white p-0 antialiased shadow-none transition-transform duration-200 xl:left-0 xl:translate-x-0 xl:bg-transparent">
         <div class="h-19.5">
-            <i class="absolute top-0 right-0 hidden p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"
-                sidenav-close></i>
+            <button id="close-sidebar" class="absolute top-0 right-0 p-4 opacity-50 cursor-pointer fas fa-times text-slate-400 xl:hidden"></button>
             <a class="block px-8 py-6 m-0 text-sm whitespace-nowrap text-slate-700" href="#">
                 <img src="{{ asset('images/logo.webp') }}"
                     class="inline h-full max-w-full transition-all duration-200 ease-nav-brand max-h-8"
@@ -137,27 +170,27 @@
                 </li>
 
 
-         <li class="mt-0.5 w-full">
-    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
-        href="{{ route('ventes.create') }}">
-        <div
-            class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart" width="16"
-                height="16" viewBox="0 0 24 24" stroke-width="2" stroke="#1e40af" fill="none" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <circle cx="6" cy="19" r="2" />
-                <circle cx="17" cy="19" r="2" />
-                <path d="M17 17H6V6H3" />
-                <path d="M6 6L7 3H19L21 7H8" />
-            </svg>
-        </div>
-        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
-            style="color: white;">
-            Gestion des ventes
-        </span>
-    </a>
-</li>
+                <li class="mt-0.5 w-full">
+                    <a class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors"
+                        href="{{ route('ventes.create') }}">
+                        <div
+                            class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart"
+                                width="16" height="16" viewBox="0 0 24 24" stroke-width="2" stroke="#1e40af"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <circle cx="6" cy="19" r="2" />
+                                <circle cx="17" cy="19" r="2" />
+                                <path d="M17 17H6V6H3" />
+                                <path d="M6 6L7 3H19L21 7H8" />
+                            </svg>
+                        </div>
+                        <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft"
+                            style="color: white;">
+                            Gestion des ventes
+                        </span>
+                    </a>
+                </li>
 
 
 
@@ -232,6 +265,37 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- main script file  -->
     <script src="{{ asset('js/soft-ui-dashboard-tailwind.js') }}"></script>
+
+    <script>
+        // Script simple pour gérer l'ouverture/fermeture du menu sur mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const closeSidebarBtn = document.getElementById('close-sidebar');
+            const sidebar = document.getElementById('sidebar');
+
+            // Ouvrir le menu
+            hamburgerBtn.addEventListener('click', function() {
+                sidebar.classList.add('sidenav-open');
+            });
+
+            // Fermer le menu
+            closeSidebarBtn.addEventListener('click', function() {
+                sidebar.classList.remove('sidenav-open');
+            });
+
+            // Fermer le menu en cliquant à l'extérieur (sur mobile)
+            document.addEventListener('click', function(event) {
+                if (window.innerWidth < 1280) {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnHamburger = hamburgerBtn.contains(event.target);
+
+                    if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.classList.contains('sidenav-open')) {
+                        sidebar.classList.remove('sidenav-open');
+                    }
+                }
+            });
+        });
+    </script>
 
     @yield('scripts')
 
