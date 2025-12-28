@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Vente;
-use App\Models\LigneVente;
 use App\Models\Client;
+use App\Models\LigneVente;
 use App\Models\Produit;
-use Illuminate\Support\Facades\DB;
+use App\Models\Vente;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 class AdminController extends Controller
 {
@@ -51,9 +53,9 @@ class AdminController extends Controller
         // Données pour graphiques
         // Chiffre d'affaires par mois (6 derniers mois)
         $caParMois = Vente::select(
-                DB::raw('DATE_FORMAT(created_at, "%b") as mois'),
-                DB::raw('SUM(montant_total) as total')
-            )
+            DB::raw('DATE_FORMAT(created_at, "%b") as mois'),
+            DB::raw('SUM(montant_total) as total')
+        )
             ->where('statut', 'terminee')
             ->where('created_at', '>=', now()->subMonths(6))
             ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'), 'mois')
@@ -86,9 +88,9 @@ class AdminController extends Controller
 
         // Top produits (plus vendus)
         $topProduits = LigneVente::select(
-                'produits.nom',
-                DB::raw('SUM(ligne_ventes.quantite) as total_vendu')
-            )
+            'produits.nom',
+            DB::raw('SUM(ligne_ventes.quantite) as total_vendu')
+        )
             ->join('produits', 'ligne_ventes.produit_id', '=', 'produits.id')
             ->join('ventes', 'ligne_ventes.vente_id', '=', 'ventes.id')
             ->where('ventes.statut', 'terminee')
@@ -116,7 +118,7 @@ class AdminController extends Controller
                 ->count();
 
             $heuresVente[] = $ventesHeure;
-            $heuresLabels[] = $i . 'h';
+            $heuresLabels[] = $i.'h';
         }
 
         // Dernières ventes
@@ -185,5 +187,60 @@ class AdminController extends Controller
             'clientsRecents',
             'produitsRuptureListe'
         ));
+    }
+
+    public function showProfile()
+    {
+        $user = Auth::user();
+
+        return view('admin.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        // Règles de base
+        $rules = [
+            'name' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,'.$user->id],
+        ];
+
+        // Si le mot de passe est fourni, valider
+        if ($request->filled('password')) {
+            $rules['password'] = ['required', 'confirmed', Rules\Password::defaults()];
+            $rules['current_password'] = [
+                'required',
+                function ($attribute, $value, $fail) use ($user) {
+                    if (! Hash::check($value, $user->password)) {
+                        $fail('Le mot de passe actuel est incorrect.');
+                    }
+                },
+            ];
+        }
+
+        $validated = $request->validate($rules);
+
+        // Mettre à jour seulement les champs fournis
+        if ($request->filled('name')) {
+            $user->name = $validated['name'];
+        }
+
+        if ($request->filled('email')) {
+            $user->email = $validated['email'];
+        }
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($validated['password']);
+        }
+
+        $user->save();
+
+        $message = $request->filled('password')
+            ? 'Votre mot de passe a été mis à jour avec succès.'
+            : 'Votre profil a été mis à jour avec succès.';
+
+        return redirect()->route('admin.profile')
+            ->with('success', $message);
     }
 }
