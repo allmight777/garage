@@ -1,4 +1,3 @@
-{{-- resources/views/ventes/index.blade.php --}}
 @extends('layouts.admin')
 
 @section('content')
@@ -219,6 +218,29 @@
             position: relative;
             height: 350px;
             width: 100%;
+        }
+
+        /* Filtre année */
+        .annee-filter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .annee-filter label {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .annee-filter select {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            color: var(--dark);
+            font-weight: 500;
+            min-width: 100px;
         }
 
         /* Carte principale */
@@ -623,6 +645,11 @@
             .filtre-group .form-control {
                 width: 100%;
             }
+
+            .annee-filter {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
 
         @media (max-width: 480px) {
@@ -644,7 +671,6 @@
             }
         }
     </style>
-
 
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
@@ -741,7 +767,6 @@
             </div>
         @endif
 
-
         <!-- Statistiques -->
         <div class="stats-grid"
             style="
@@ -789,7 +814,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- Section Graphiques -->
         <div class="charts-section">
@@ -840,12 +864,18 @@
             <div class="chart-card" style="margin-top: 25px;">
                 <div class="chart-header">
                     <h3 class="chart-title"><i class="fas fa-chart-bar"></i> Évolution du chiffre d'affaires</h3>
-                    <div class="chart-controls">
-                        {{-- <select id="periodeChart" class="form-control" style="width: auto;">
-                            <option value="7">7 derniers jours</option>
-                            <option value="30" selected>30 derniers jours</option>
-                            <option value="90">3 derniers mois</option>
-                        </select>  --}}
+                    <div class="annee-filter">
+                        <label for="annee-select">Année :</label>
+                        <select id="annee-select" name="annee">
+                            @php
+                                $anneesDisponibles = $chartData['annees_disponibles'] ?? [date('Y')];
+                            @endphp
+                            @foreach ($anneesDisponibles as $annee)
+                                <option value="{{ $annee }}" {{ $selectedYear == $annee ? 'selected' : '' }}>
+                                    {{ $annee }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="chart-container-large">
@@ -883,6 +913,7 @@
                                 </option>
                             </select>
                         </div>
+                        <input type="hidden" name="annee" value="{{ $selectedYear }}">
                         <button type="submit" class="btn-filtre">
                             <i class="fas fa-filter"></i> Filtrer
                         </button>
@@ -1065,6 +1096,7 @@
 
                 // Données réelles depuis le contrôleur
                 const chartData = @json($chartData);
+                let evolutionChart = null;
 
                 // 1. Graphique Ventes par jour
                 if (document.getElementById('ventesParJourChart')) {
@@ -1095,7 +1127,12 @@
                             },
                             scales: {
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return new Intl.NumberFormat('fr-FR').format(value) + ' FCFA';
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -1176,16 +1213,20 @@
                 }
 
                 // 4. Graphique Évolution CA
-                if (document.getElementById('evolutionCAChart')) {
+                function updateEvolutionChart(year) {
+                    if (evolutionChart) {
+                        evolutionChart.destroy();
+                    }
+
                     const ctx4 = document.getElementById('evolutionCAChart').getContext('2d');
-                    new Chart(ctx4, {
+                    evolutionChart = new Chart(ctx4, {
                         type: 'bar',
                         data: {
                             labels: chartData.evolution_ca?.labels || ['Jan', 'Fév', 'Mar', 'Avr', 'Mai',
                                 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'
                             ],
                             datasets: [{
-                                label: 'Chiffre d\'affaires',
+                                label: `Chiffre d'affaires (${year})`,
                                 data: chartData.evolution_ca?.data || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                     0
                                 ],
@@ -1200,33 +1241,48 @@
                             maintainAspectRatio: false,
                             plugins: {
                                 legend: {
-                                    display: false
+                                    display: true,
+                                    position: 'top'
                                 }
                             },
                             scales: {
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return new Intl.NumberFormat('fr-FR').format(value) + ' FCFA';
+                                        }
+                                    }
                                 }
                             }
                         }
                     });
                 }
 
-                // 5. Graphique Heures de vente
+                // Initialiser le graphique d'évolution
+                updateEvolutionChart(chartData.evolution_ca?.current_year || new Date().getFullYear());
+
+                // 5. Graphique Heures de vente - TOUTES les heures
                 if (document.getElementById('heuresVenteChart')) {
                     const ctx5 = document.getElementById('heuresVenteChart').getContext('2d');
                     new Chart(ctx5, {
-                        type: 'radar',
+                        type: 'line',
                         data: {
-                            labels: chartData.heures_vente?.labels || ['8h', '10h', '12h', '14h', '16h', '18h',
-                                '20h'
+                            labels: chartData.heures_vente?.labels || ['00h', '01h', '02h', '03h', '04h', '05h',
+                                '06h',
+                                '07h', '08h', '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h',
+                                '18h', '19h', '20h', '21h', '22h', '23h'
                             ],
                             datasets: [{
                                 label: 'Nombre de ventes',
-                                data: chartData.heures_vente?.data || [5, 12, 8, 15, 10, 7, 3],
-                                backgroundColor: colors.secondary + '40',
+                                data: chartData.heures_vente?.data || Array(24).fill(0),
                                 borderColor: colors.secondary,
-                                borderWidth: 3
+                                backgroundColor: colors.secondary + '20',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: colors.secondary,
+                                pointRadius: 3
                             }]
                         },
                         options: {
@@ -1236,10 +1292,31 @@
                                 legend: {
                                     display: false
                                 }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                },
+                                x: {
+                                    ticks: {
+                                        maxTicksLimit: 12
+                                    }
+                                }
                             }
                         }
                     });
                 }
+
+                // Gestion du changement d'année
+                document.getElementById('annee-select').addEventListener('change', function() {
+                    const selectedYear = this.value;
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('annee', selectedYear);
+                    window.location.href = url.toString();
+                });
 
                 // Gestion de l'annulation
                 document.querySelectorAll('.annuler-btn').forEach(btn => {

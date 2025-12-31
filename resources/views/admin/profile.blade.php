@@ -1155,7 +1155,7 @@
 
                             <div class="avatar-change">
 
-                                <i class="fas fa-camera me-1"></i> Changer
+                           
 
                             </div>
 

@@ -48,16 +48,18 @@ class VenteController extends Controller
             'nombre_aujourdhui' => $ventesAujourdhui->count(),
         ];
 
-        // Données RÉELLES pour les graphiques
-        $chartData = $this->getRealChartData();
+        // Données RÉELLES pour les graphiques avec année sélectionnée
+        $selectedYear = $request->get('annee', Carbon::now()->year);
+        $chartData = $this->getRealChartData($selectedYear);
 
-        return view('ventes.index', compact('ventes', 'statistiques', 'chartData'));
+        return view('ventes.index', compact('ventes', 'statistiques', 'chartData', 'selectedYear'));
     }
 
-    // Méthode pour récupérer les données RÉELLES des graphiques
-    private function getRealChartData()
+    // Méthode pour récupérer les données RÉELLES des graphiques CORRIGÉE
+    private function getRealChartData($selectedYear = null)
     {
         $now = Carbon::now();
+        $currentYear = $selectedYear ?: $now->year;
 
         // 1. Ventes par jour (7 derniers jours)
         $ventesParJour = Vente::select(
@@ -65,7 +67,7 @@ class VenteController extends Controller
             DB::raw('SUM(montant_total) as total')
         )
             ->where('statut', 'terminee')
-            ->where('created_at', '>=', $now->copy()->subDays(7))
+            ->whereDate('created_at', '>=', $now->copy()->subDays(7))
             ->groupBy('date')
             ->orderBy('date')
             ->get();
@@ -82,25 +84,32 @@ class VenteController extends Controller
             $joursData[] = $vente ? $vente->total : 0;
         }
 
-        // 2. Mode de paiement
+        // 2. Mode de paiement (30 derniers jours)
         $modePaiement = Vente::select(
             'mode_paiement',
             DB::raw('COUNT(*) as count'),
             DB::raw('SUM(montant_total) as total')
         )
             ->where('statut', 'terminee')
-            ->where('created_at', '>=', $now->copy()->subDays(30))
+            ->whereDate('created_at', '>=', $now->copy()->subDays(30))
             ->groupBy('mode_paiement')
             ->get();
 
         $modeLabels = [];
         $modeData = [];
+        $modeMapping = [
+            'especes' => '💵 Espèces',
+            'mobile_money' => '📱 Mobile Money',
+            'carte' => '💳 Carte bancaire',
+            'cheque' => '📄 Chèque'
+        ];
+
         foreach ($modePaiement as $mode) {
-            $modeLabels[] = $mode->mode_paiement_text;
+            $modeLabels[] = $modeMapping[$mode->mode_paiement] ?? $mode->mode_paiement;
             $modeData[] = $mode->count;
         }
 
-        // 3. Top 5 produits (depuis 30 jours)
+        // 3. Top 5 produits (30 derniers jours)
         $topProduits = LigneVente::select(
             'produits.nom',
             DB::raw('SUM(ligne_ventes.quantite) as total_quantite')
@@ -108,7 +117,7 @@ class VenteController extends Controller
             ->join('produits', 'ligne_ventes.produit_id', '=', 'produits.id')
             ->join('ventes', 'ligne_ventes.vente_id', '=', 'ventes.id')
             ->where('ventes.statut', 'terminee')
-            ->where('ventes.created_at', '>=', $now->copy()->subDays(30))
+            ->whereDate('ventes.created_at', '>=', $now->copy()->subDays(30))
             ->groupBy('produits.id', 'produits.nom')
             ->orderByDesc('total_quantite')
             ->limit(5)
@@ -117,33 +126,36 @@ class VenteController extends Controller
         $produitsLabels = [];
         $produitsData = [];
         foreach ($topProduits as $produit) {
-            $produitsLabels[] = $produit->nom;
+            $produitsLabels[] = substr($produit->nom, 0, 20) . (strlen($produit->nom) > 20 ? '...' : '');
             $produitsData[] = $produit->total_quantite;
         }
 
-        // 4. Évolution CA mensuel (12 derniers mois)
+        // 4. Évolution CA mensuel - CORRECTION : Année sélectionnée uniquement
         $evolutionCA = Vente::select(
             DB::raw("DATE_FORMAT(created_at, '%Y-%m') as mois"),
             DB::raw('SUM(montant_total) as total')
         )
             ->where('statut', 'terminee')
-            ->where('created_at', '>=', $now->copy()->subMonths(12))
+            ->whereYear('created_at', $currentYear)
             ->groupBy('mois')
             ->orderBy('mois')
             ->get();
 
         $caLabels = [];
         $caData = [];
-        for ($i = 11; $i >= 0; $i--) {
-            $mois = $now->copy()->subMonths($i)->format('Y-m');
-            $moisNom = $now->copy()->subMonths($i)->locale('fr')->monthName;
+
+        // Générer les 12 mois de l'année sélectionnée
+        for ($i = 1; $i <= 12; $i++) {
+            $moisDate = Carbon::create($currentYear, $i, 1);
+            $moisKey = $moisDate->format('Y-m');
+            $moisNom = $moisDate->locale('fr')->monthName;
             $caLabels[] = ucfirst($moisNom);
 
-            $ca = $evolutionCA->firstWhere('mois', $mois);
+            $ca = $evolutionCA->firstWhere('mois', $moisKey);
             $caData[] = $ca ? $ca->total : 0;
         }
 
-        // 5. Heures de vente
+        // 5. Heures de vente - TOUTES les heures de 0 à 23
         $heuresVente = Vente::select(
             DB::raw('HOUR(created_at) as heure'),
             DB::raw('COUNT(*) as count')
@@ -155,11 +167,24 @@ class VenteController extends Controller
 
         $heuresLabels = [];
         $heuresData = [];
-        for ($h = 8; $h <= 20; $h += 2) {
-            $heuresLabels[] = $h.'h';
 
+        // Générer toutes les heures de 0 à 23
+        for ($h = 0; $h < 24; $h++) {
+            $heuresLabels[] = sprintf('%02d', $h) . 'h';
             $venteHeure = $heuresVente->firstWhere('heure', $h);
             $heuresData[] = $venteHeure ? $venteHeure->count : 0;
+        }
+
+        // 6. Années disponibles pour le filtre
+        $anneesDisponibles = Vente::select(DB::raw('YEAR(created_at) as annee'))
+            ->where('statut', 'terminee')
+            ->groupBy('annee')
+            ->orderBy('annee', 'desc')
+            ->pluck('annee')
+            ->toArray();
+
+        if (empty($anneesDisponibles)) {
+            $anneesDisponibles = [$currentYear];
         }
 
         return [
@@ -179,11 +204,13 @@ class VenteController extends Controller
             'evolution_ca' => [
                 'labels' => $caLabels,
                 'data' => $caData,
+                'current_year' => $currentYear,
             ],
             'heures_vente' => [
                 'labels' => $heuresLabels,
                 'data' => $heuresData,
             ],
+            'annees_disponibles' => $anneesDisponibles,
         ];
     }
 
@@ -552,71 +579,39 @@ class VenteController extends Controller
         return view('ventes.facture', compact('vente'));
     }
 
-    // Récupérer les données pour les graphiques
-    private function getChartData()
+    // API pour récupérer les données des graphiques par année
+    public function getChartDataByYear(Request $request)
     {
-        // Ventes des 30 derniers jours
-        $startDate = now()->subDays(30);
-        $ventesParJour = Vente::where('statut', 'terminee')
-            ->where('created_at', '>=', $startDate)
-            ->selectRaw('DATE(created_at) as date, SUM(montant_total) as total, COUNT(*) as nombre')
-            ->groupBy('date')
-            ->orderBy('date')
+        $year = $request->get('annee', Carbon::now()->year);
+
+        $evolutionCA = Vente::select(
+            DB::raw("DATE_FORMAT(created_at, '%Y-%m') as mois"),
+            DB::raw('SUM(montant_total) as total')
+        )
+            ->where('statut', 'terminee')
+            ->whereYear('created_at', $year)
+            ->groupBy('mois')
+            ->orderBy('mois')
             ->get();
 
-        // Mode de paiement
-        $modePaiement = Vente::where('statut', 'terminee')
-            ->selectRaw('mode_paiement, COUNT(*) as nombre, SUM(montant_total) as total')
-            ->groupBy('mode_paiement')
-            ->get();
+        $caLabels = [];
+        $caData = [];
 
-        // Top 5 produits
-        $topProduits = LigneVente::join('produits', 'ligne_ventes.produit_id', '=', 'produits.id')
-            ->selectRaw('produits.nom, SUM(ligne_ventes.quantite) as quantite_vendue, SUM(ligne_ventes.quantite * ligne_ventes.prix_unitaire) as total')
-            ->groupBy('produits.id', 'produits.nom')
-            ->orderByDesc('quantite_vendue')
-            ->limit(5)
-            ->get();
+        // Générer les 12 mois de l'année
+        for ($i = 1; $i <= 12; $i++) {
+            $moisDate = Carbon::create($year, $i, 1);
+            $moisKey = $moisDate->format('Y-m');
+            $moisNom = $moisDate->locale('fr')->monthName;
+            $caLabels[] = ucfirst($moisNom);
 
-        // Ventes par heure
-        $ventesParHeure = Vente::where('statut', 'terminee')
-            ->selectRaw('HOUR(created_at) as heure, COUNT(*) as nombre')
-            ->groupBy('heure')
-            ->orderBy('heure')
-            ->get();
-
-        return [
-            'ventesParJour' => $ventesParJour,
-            'modePaiement' => $modePaiement,
-            'topProduits' => $topProduits,
-            'ventesParHeure' => $ventesParHeure,
-        ];
-    }
-
-    // API pour récupérer les données des graphiques
-    public function getChartDataApi(Request $request)
-    {
-        $periode = $request->get('periode', 30);
-        $startDate = now()->subDays($periode);
-
-        // Ventes par jour
-        $ventesParJour = Vente::where('statut', 'terminee')
-            ->where('created_at', '>=', $startDate)
-            ->selectRaw('DATE(created_at) as date, SUM(montant_total) as total')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        // Données formatées pour Chart.js
-        $labels = $ventesParJour->pluck('date')->map(function ($date) {
-            return date('d/m', strtotime($date));
-        });
-
-        $data = $ventesParJour->pluck('total');
+            $ca = $evolutionCA->firstWhere('mois', $moisKey);
+            $caData[] = $ca ? $ca->total : 0;
+        }
 
         return response()->json([
-            'labels' => $labels,
-            'data' => $data,
+            'labels' => $caLabels,
+            'data' => $caData,
+            'year' => $year
         ]);
     }
 

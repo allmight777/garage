@@ -2309,10 +2309,7 @@
                                 <div class="detail-specs">
                                     <h4><i class="fas fa-list"></i> Caractéristiques</h4>
                                     <div class="specs-grid">
-                                        <div class="spec-card">
-                                            <span class="spec-label">Référence</span>
-                                            <span class="spec-value">${data.reference || 'N/A'}</span>
-                                        </div>
+
                                         <div class="spec-card">
                                             <span class="spec-label">Marque</span>
                                             <span class="spec-value">${data.marque || 'Non spécifiée'}</span>
@@ -2337,10 +2334,7 @@
                                             <span class="spec-label">Unité</span>
                                             <span class="spec-value">${data.unite_mesure || 'unité'}</span>
                                         </div>
-                                        <div class="spec-card">
-                                            <span class="spec-label">Ajouté le</span>
-                                            <span class="spec-value">${data.created_at || 'Date non disponible'}</span>
-                                        </div>
+                                    
                                     </div>
                                 </div>
                             </div>

@@ -840,7 +840,7 @@
                     .product-search .search-wrapper {
                         position: relative;
                         width: 100%;
-                       
+
                     }
 
                     .product-search input {
@@ -977,10 +977,7 @@
                                             {{ $produit->stock_actuel }} {{ $produit->unite_mesure }}
                                         </span>
                                     </div>
-                                    <div class="spec-item-full">
-                                        <span class="spec-label-full">Référence</span>
-                                        <span class="spec-value-full">{{ $produit->reference }}</span>
-                                    </div>
+                             
                                 </div>
 
                                 <div class="product-actions-full">
@@ -1217,10 +1214,7 @@
                                 </div>
 
                                 <div class="detail-specs-grid">
-                                    <div class="spec-card-full">
-                                        <span class="spec-label-full">Référence</span>
-                                        <span class="spec-value-full">${data.reference}</span>
-                                    </div>
+
                                     <div class="spec-card-full">
                                         <span class="spec-label-full">Marque</span>
                                         <span class="spec-value-full">${data.marque || 'Non spécifiée'}</span>
@@ -1249,17 +1243,8 @@
                                         <span class="spec-label-full">Unité</span>
                                         <span class="spec-value-full">${data.unite_mesure}</span>
                                     </div>
-                                    <div class="spec-card-full">
-                                        <span class="spec-label-full">Statut stock</span>
-                                        <span class="spec-value-full stock-indicator stock-${data.stock_status}">
-                                            <span class="stock-dot"></span>
-                                            ${data.stock_status === 'bon' ? 'Disponible' : data.stock_status === 'faible' ? 'Stock faible' : 'Rupture'}
-                                        </span>
-                                    </div>
-                                    <div class="spec-card-full">
-                                        <span class="spec-label-full">Ajouté le</span>
-                                        <span class="spec-value-full">${data.created_at}</span>
-                                    </div>
+
+
                                 </div>
                             </div>
                         </div>

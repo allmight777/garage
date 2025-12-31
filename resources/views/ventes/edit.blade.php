@@ -115,7 +115,6 @@
             flex: 1;
             background-color: #0B9EF3;
             color: white;
-            /* texte en blanc */
             border: none;
             padding: 10px 15px;
             border-radius: 8px;
@@ -701,8 +700,6 @@
         }
     </style>
 
-
-
     <!-- Navbar -->
     <nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start"
         navbar-main navbar-scroll="true">
@@ -724,7 +721,6 @@
             <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
                 <div class="flex items-center md:ml-auto md:pr-4">
                     <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
-
                     </div>
                 </div>
 
@@ -844,7 +840,7 @@
                                             <td data-label="Prix unitaire">
                                                 <input type="number" name="produits[{{ $loop->index }}][prix]"
                                                     value="{{ $ligne->prix_unitaire }}" class="prix-input" min="0"
-                                                    step="10" onchange="calculerTotal()">
+                                                    step="any" onchange="calculerTotal()">
                                             </td>
                                             <td data-label="Quantité">
                                                 <div class="qty-control">
@@ -926,7 +922,7 @@
                     <div class="main-card mb-4 animate-fade-in" style="animation-delay: 0.2s">
                         <div class="card-header">
                             <h2 class="card-title">
-                                <i class="fas fa-user-tie"></i> Client
+                                <i class="fas fa-user-tie"></i> Client (optionnel)
                             </h2>
                         </div>
 
@@ -946,10 +942,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Nom complet *</label>
+                                <label class="form-label">Nom complet</label>
                                 <input type="text" name="client_nom" class="form-control"
                                     value="{{ $vente->client_nom ?? ($vente->client->nom_complet ?? '') }}"
-                                    placeholder="Ex: Jean Dupont" required>
+                                    placeholder="Client anonyme (optionnel)">
                             </div>
 
                             <div class="form-group">
@@ -973,14 +969,12 @@
                                 <i class="fas fa-save"></i> ENREGISTRER
                             </button>
 
-
                             <a href="{{ route('ventes.show', $vente) }}" class="btn-outline-secondary"
                                 style="flex: 1; text-align: center;">
                                 <i class="fas fa-times"></i> ANNULER
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </form>
@@ -1225,7 +1219,7 @@
             }, 10);
         }
 
-        // Validation formulaire
+        // Validation formulaire - CLIENT OPTIONNEL
         document.getElementById('editVenteForm').addEventListener('submit', function(e) {
             const produits = document.querySelectorAll('.table-row[data-index]').length;
 
@@ -1234,18 +1228,6 @@
                 Swal.fire({
                     title: 'Vente vide',
                     text: 'Ajoutez au moins un produit à la vente',
-                    icon: 'error',
-                    confirmButtonColor: '#4361ee'
-                });
-                return;
-            }
-
-            const clientNom = document.querySelector('input[name="client_nom"]').value;
-            if (!clientNom.trim()) {
-                e.preventDefault();
-                Swal.fire({
-                    title: 'Client requis',
-                    text: 'Le nom du client est obligatoire',
                     icon: 'error',
                     confirmButtonColor: '#4361ee'
                 });
